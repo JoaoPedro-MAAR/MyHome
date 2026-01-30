@@ -2,8 +2,8 @@ package br.com.edu.ifpb.pps.moderacao;
 
 import br.com.edu.ifpb.pps.model.Anuncio;
 
-public interface ModeradorHandler {
+public interface ModeracaoHandler {
 
-    ModeradorHandler setProximo(ModeradorHandler proximo);
+    ModeracaoHandler setNext(ModeracaoHandler proximo);
     boolean moderar(Anuncio anuncio);
 }
