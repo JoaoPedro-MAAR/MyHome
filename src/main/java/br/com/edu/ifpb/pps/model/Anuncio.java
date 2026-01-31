@@ -21,7 +21,10 @@ public class Anuncio implements Prototype {
 
     private List<Observador> observadores;
 
-    public Anuncio(){}
+    public Anuncio(){
+        this.estado = new RascunhoState();
+        this.observadores = new ArrayList<>();
+    }
 
     public Anuncio(String titulo, String descricao, double preco, Usuario anunciante, Imovel imovel) {
         this.titulo = titulo;
