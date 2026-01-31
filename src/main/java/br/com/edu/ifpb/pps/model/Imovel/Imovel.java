@@ -27,7 +27,7 @@ public abstract class Imovel implements Prototype<Imovel> {
         return finalidade;
     }
 
-    private Double[] getLocalizacao() {
+    public Double[] getLocalizacao() {
         return localizacao;
     }
 
