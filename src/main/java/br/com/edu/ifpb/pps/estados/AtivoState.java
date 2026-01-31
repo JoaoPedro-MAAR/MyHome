@@ -15,14 +15,14 @@ public class AtivoState implements EstadoAnuncio {
     }
 
 
+     public void editar(Anuncio anuncio) {
+        anuncio.setEstado(new RascunhoState());
+    }
+
     public void enviarParaModeracao(Anuncio anuncio) {
         System.out.println("Erro");
     }
    
-    public void editar(Anuncio anuncio) {
-        System.out.println("Erro");
-    }
-
     public void aprovar(Anuncio anuncio) {
         System.out.println("Erro");
     }
