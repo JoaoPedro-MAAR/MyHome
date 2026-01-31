@@ -1,5 +1,6 @@
 package br.com.edu.ifpb.pps.ImovelBuilder;
 
+import br.com.edu.ifpb.pps.Enum.FinalidadeEnum;
 import br.com.edu.ifpb.pps.model.Imovel.Imovel;
 
 public abstract class ImovelBuilder<T extends Imovel> {
@@ -9,21 +10,34 @@ public abstract class ImovelBuilder<T extends Imovel> {
 
 
     public abstract void reset();
-    public ImovelBuilder setLocalizacao(Double[] localizacao){
+
+    public ImovelBuilder<T> setLocalizacao(Double[] localizacao){
         result.setLocalizacao(localizacao);
         return this;
     }
-    public ImovelBuilder setArea(Double area){
+    public ImovelBuilder<T> setArea(Double area){
         result.setArea(area);
         return this;
     }
-    public ImovelBuilder setFinalidade(String finalidade){
+    public ImovelBuilder<T> setFinalidade(FinalidadeEnum finalidade){
         result.setFinalidade(finalidade);
         return this;
     }
 
     public T build(){
-        return this.result;
+        validateFields();
+        T finalResult = this.result;
+        reset();
+        return finalResult;
+    };
+
+    protected  void validateFields() throws AssertionError{
+        if(result.getArea() == null || result.getArea() < 0){
+            throw new AssertionError("Area menor que zero");
+        }
+        if(result.getLocalizacao() == null){
+            throw new AssertionError("Localizacao nula");
+        }
     };
 
 }

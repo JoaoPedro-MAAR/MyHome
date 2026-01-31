@@ -1,12 +1,14 @@
 package br.com.edu.ifpb.pps.model.Imovel;
 
+import br.com.edu.ifpb.pps.Enum.FinalidadeEnum;
+
 public class Casa extends Imovel{
     protected Boolean temQuintal;
     protected Integer qtdQuartos;
     protected Boolean temJardim;
 
 
-    public Casa(Double area, Double[] localizacao, String finalidade, Boolean temQuintal,Integer qtdQuartos, Boolean temJardim) {
+    public Casa(Double area, Double[] localizacao, FinalidadeEnum finalidade, Boolean temQuintal, Integer qtdQuartos, Boolean temJardim) {
         super(area, localizacao, finalidade);
         this.temQuintal = temQuintal;
         this.qtdQuartos = qtdQuartos;
@@ -52,5 +54,21 @@ public class Casa extends Imovel{
 
     public void setTemJardim(Boolean temJardim) {
         this.temJardim = temJardim;
+    }
+
+    @Override
+    public String toString() {
+        return "Casa{" +
+                "area=" + area +
+                ", finalidade='" + finalidade + '\'' +
+                ", localizacao=" + (
+                localizacao != null
+                        ? "[" + localizacao[0] + ", " + localizacao[1] + "]"
+                        : "N/A"
+        ) +
+                ", qtdQuartos=" + qtdQuartos +
+                ", temJardim=" + temJardim +
+                ", temQuintal=" + temQuintal +
+                '}';
     }
 }
