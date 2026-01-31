@@ -10,12 +10,16 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import br.com.edu.ifpb.pps.configuracao.Configuracao;
+
 public class NotificacaoEmail implements MeioDeNotificacao {
 
-    private final String email = "lucas.toscano@academico.ifpb.edu.br";
-    private final String senha = "zxdh zvjj ohbb jvcl";
+    
     @Override
     public void enviar(String mensagem, String destinatario) {
+        String email = Configuracao.getInstance().getPropriedade("email");
+        String senha = Configuracao.getInstance().getPropriedade("senha");
+
         Properties propiedades = new Properties();
 
         propiedades.put("mail.smtp.host", "smtp.gmail.com");

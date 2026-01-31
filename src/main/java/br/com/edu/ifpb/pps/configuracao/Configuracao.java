@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.io.FileInputStream;
 
 public class Configuracao {
 
@@ -25,10 +26,7 @@ public class Configuracao {
     }
 
     public void carregarArquivoProperties(){
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream("configuracao.properties")) {
-            if (input == null){
-                return;
-            }
+        try (InputStream input = new FileInputStream("configuracao.properties")) {
             propiedades.load(input);
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -48,9 +46,9 @@ public class Configuracao {
         return Double.parseDouble(valor);
     }
 
-    public int getLimiteUploadFotos(){
-        String valor = propiedades.getProperty("limiteUploadFotos", "0");
-        return Integer.parseInt(valor);
-    }
+    public String getPropriedade(String propriedade){
+        return propiedades.getProperty(propriedade);
+    } 
+   
 
 }
