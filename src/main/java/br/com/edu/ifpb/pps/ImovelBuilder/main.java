@@ -4,6 +4,7 @@ import br.com.edu.ifpb.pps.DTO.Imovel.AnuncioDTO;
 import br.com.edu.ifpb.pps.DTO.Imovel.ApartamentoDTO;
 import br.com.edu.ifpb.pps.DTO.Imovel.CasaDTO;
 import br.com.edu.ifpb.pps.Enum.FinalidadeEnum;
+import br.com.edu.ifpb.pps.Factory.AnuncioFactory;
 import br.com.edu.ifpb.pps.ImovelBuilder.Director.DirectorApartamento;
 import br.com.edu.ifpb.pps.ImovelBuilder.Director.DirectorCasa;
 import br.com.edu.ifpb.pps.ImovelBuilder.Registry.ImovelBuilderRegistry;
@@ -18,8 +19,6 @@ public class main {
 
         System.out.println("Tipos:");
 
-        ImovelBuilderRegistry.register("CASA", CasaBuilder::new);
-        ImovelBuilderRegistry.register("APARTAMENTO", ApartamentoBuilder::new);
         System.out.println(ImovelBuilderRegistry.getAllTipos());
 
         Usuario user1 = new Usuario("Uno","1@1.com" );
@@ -51,7 +50,7 @@ public class main {
 
 
 
-        Anuncio anuncioCasa = new Anuncio(anuncioDto);
+        Anuncio anuncioCasa = AnuncioFactory.criar(anuncioDto);
         System.out.println(anuncioCasa);
         System.out.println(anuncioCasa.getImovel());
 
@@ -78,7 +77,7 @@ public class main {
         anuncioAptoDTO.titulo = "Apartamento Muito bom";
         anuncioAptoDTO.preco = 200.000;
 
-        Anuncio anuncioApto = new Anuncio(anuncioAptoDTO);
+        Anuncio anuncioApto = AnuncioFactory.criar(anuncioAptoDTO);
         System.out.println("Anuncio de apartamento");
         System.out.println(anuncioApto);
         System.out.println(anuncioApto.getImovel());
