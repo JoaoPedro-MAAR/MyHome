@@ -5,5 +5,5 @@ import java.util.List;
 import br.com.edu.ifpb.pps.model.Anuncio;
 
 public interface FiltroAnuncio {
-    List<Anuncio> filtrar(String conteudo);
+    List<Anuncio> filtrar(List<Anuncio> conteudo);
 }

@@ -14,7 +14,7 @@ public class FiltroComposto implements FiltroAnuncio {
     }
 
     @Override
-    public List<Anuncio> filtrar(String conteudo) {
+    public List<Anuncio> filtrar(List<Anuncio> conteudo) {
         List<Anuncio> resultados = new ArrayList<>();
         for (FiltroAnuncio filtro : filtros) {
             resultados.addAll(filtro.filtrar(conteudo));
