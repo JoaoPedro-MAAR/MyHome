@@ -9,17 +9,16 @@ public class ModeracaoTermo extends ModeracaoBase {
 
     @Override
     public boolean moderar(Anuncio anuncio) {
-        List<String> termosProibidos = Configuracao.getInstance().getTermosProbidos();
-        
-        String textoAnalise = (anuncio.getTitulo() + " ");
-        
-        for (String termo : termosProibidos) {
+       List<String> termosProbidios = Configuracao.getInstance().getTermosProbidos();
+       String textoAnalise = (anuncio.getTitulo() + " ");
+
+       for (String termo : termosProbidios) {
             if (textoAnalise.contains(termo.trim().toLowerCase())) {
                 System.out.println("Anúncio com termo proibido.");
                 return false;
             }
-        }
+       }
 
-        return verificarProximo(anuncio);
+       return super.moderar(anuncio);
     }
 }
