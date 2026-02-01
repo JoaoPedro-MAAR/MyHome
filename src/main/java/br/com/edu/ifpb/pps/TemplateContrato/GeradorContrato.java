@@ -19,7 +19,16 @@ public abstract class GeradorContrato {
     }
 
     protected void validarDados(ContratoDTO dados) {
-        // validações comuns (campos obrigatórios, datas, CPF/CNPJ etc.)
+        
+        if (dados.anuncio == null) {
+            throw new IllegalArgumentException("Anúncio não pode ser nulo");
+        }
+        if (dados.interessado == null) {
+            throw new IllegalArgumentException("Interessado não pode ser nulo");
+        }
+        if (dados.anunciante == null) {
+            throw new IllegalArgumentException("Anunciante não pode ser nulo");
+        }
     }
 
     protected Contrato criarContratoVazio(ContratoDTO dados) {
@@ -28,15 +37,15 @@ public abstract class GeradorContrato {
         return contrato;
     }
 
-    protected String gerarCabecalho(ContratoDTO dados) {
-        // texto comum de cabeçalho (pode ser sobrescrito se quiser)
-        return "CONTRATO GERADO PELO SISTEMA MYHOME";
-    }
+    protected abstract String gerarCabecalho(ContratoDTO dados);
 
     protected void gerarClausulasPadrao(Contrato contrato, ContratoDTO dados) {
         // cláusulas comuns a qualquer contrato (foro, obrigações gerais, etc.)
-        contrato.adicionarClausula("Cláusula 1 - Relação entre as partes...");
-        contrato.adicionarClausula("Cláusula 2 - Foro da comarca de ...");
+        contrato.adicionarClausula("Cláusula 1 - Das partes: O presente contrato é celebrado entre " + 
+            dados.anunciante.getNome() + ", doravante denominado ANUNCIANTE, e " + 
+            dados.interessado.getNome() + ", doravante denominado INTERESSADO.");
+        contrato.adicionarClausula("Cláusula 2 - - Do objeto: O objeto deste contrato é o imóvel anunciado, conforme descrito no anúncio de ID " + 
+            dados.anuncio.getId() + ".");
     }
 
     protected abstract void gerarClausulasEspecificas(Contrato contrato, ContratoDTO dados);

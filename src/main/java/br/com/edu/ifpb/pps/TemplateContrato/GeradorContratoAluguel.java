@@ -5,9 +5,20 @@ import br.com.edu.ifpb.pps.DTO.ContratoDTO;
 public class GeradorContratoAluguel extends GeradorContrato {
 
     @Override
+    protected String gerarCabecalho(ContratoDTO dados) {
+        return "CONTRATO DE ALUGUEL GERADO PELO SISTEMA MYHOME";
+    }
+
+    @Override
     protected void gerarClausulasEspecificas(Contrato contrato, ContratoDTO dados) {
-        // Implementar cláusulas específicas para contrato de aluguel
-        contrato.adicionarClausula("Cláusula específica de aluguel 1...");
-        contrato.adicionarClausula("Cláusula específica de aluguel 2...");
+        contrato.adicionarClausula("Cláusula 3 - DO VALOR DO ALUGUEL: O LOCATÁRIO pagará ao LOCADOR o valor de R$ " + 
+            dados.anuncio.getPreco() + ", com vencimento todo dia 10 de cada mês, de forma " + dados.frequenciaPagamento + ".");
+        
+        contrato.adicionarClausula("Cláusula 4 - DO PRAZO: O presente contrato vigorará pelo período de " +
+            "iniciando-se em " + dados.dataInicio + " e terminando em " + dados.dataFim + ", podendo ser renovado mediante acordo entre as partes.");
+        
+        contrato.adicionarClausula("Cláusula 5 - DAS OBRIGAÇÕES DO LOCATÁRIO: O LOCATÁRIO se obriga a: a) Manter o imóvel em bom estado de conservação; " +
+            "b) Pagar pontualmente o aluguel e demais encargos; c) Não realizar obras ou modificações sem autorização prévia do LOCADOR; " +
+            "d) Restituir o imóvel nas mesmas condições em que o recebeu ao término do contrato.");
     }
 }
