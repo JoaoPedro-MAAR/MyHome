@@ -88,6 +88,7 @@ public class ClientFacade {
     }
 
 
+
     public List<Anuncio> listarAnuncioModeracao(){
         return banco.buscarPorEstadoNome("Pendente de Moderação");
     }
