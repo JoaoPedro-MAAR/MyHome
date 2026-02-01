@@ -136,32 +136,26 @@ public class Anuncio implements Prototype<Anuncio>,EstadoAnuncio {
         }
     }
 
-    @Override
     public void enviarParaModeracao(){
         this.estado.enviarParaModeracao();
     }
 
-    @Override
     public void aprovar(){
         this.estado.aprovar();
     }
 
-    @Override
     public void reprovar(){
         this.estado.reprovar();
     }
 
-    @Override
     public void suspender(){
         this.estado.suspender();
     }
 
-    @Override
     public void vender(){
         this.estado.vender();
     }
 
-    @Override
     public void editar(){
         this.estado.editar();
     }
