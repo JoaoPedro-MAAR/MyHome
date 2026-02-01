@@ -36,10 +36,18 @@ public class Usuario {
         this.nome = nome;
     }
 
-
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public void enviarNotificacao(String mensagem){
+        if (this.meioDeNotificacao != null){
+            this.meioDeNotificacao.enviar(mensagem, this.email);
+        } else {
+            System.out.println("Erro");
+        }
+    }
+
     public MeioDeNotificacao getMeioDeNotificacao() {
         return meioDeNotificacao;
     }

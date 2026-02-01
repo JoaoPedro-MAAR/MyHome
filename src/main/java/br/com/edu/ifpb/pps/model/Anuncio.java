@@ -128,7 +128,11 @@ public class Anuncio implements Prototype<Anuncio> {
     }
 
     public void addObservador(Observador observador){
-        observadores.add(observador);
+        this.observadores.add(observador);
+    }
+
+    public void removeObservador(Observador observador){
+        this.observadores.remove(observador);
     }
 
     public void notificar(){
@@ -137,32 +141,26 @@ public class Anuncio implements Prototype<Anuncio> {
         }
     }
 
-    @Override
     public void enviarParaModeracao(){
         this.estado.enviarParaModeracao();
     }
 
-    @Override
     public void aprovar(){
         this.estado.aprovar();
     }
 
-    @Override
     public void reprovar(){
         this.estado.reprovar();
     }
 
-    @Override
     public void suspender(){
         this.estado.suspender();
     }
 
-    @Override
     public void vender(){
         this.estado.vender();
     }
 
-    @Override
     public void editar(){
         this.estado.editar();
     }
