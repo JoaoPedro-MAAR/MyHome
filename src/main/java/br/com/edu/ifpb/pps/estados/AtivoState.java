@@ -21,7 +21,6 @@ public class AtivoState implements EstadoAnuncio {
         this.anuncio.setEstado(new SuspensoState());
     }
 
-
      public void editar() {
         this.anuncio.setEstado(new RascunhoState());
     }
