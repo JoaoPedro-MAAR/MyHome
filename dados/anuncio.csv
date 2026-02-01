@@ -1,0 +1,6 @@
+TIPO;TITULO;PRECO;EMAIL_ANUNCIANTE;AREA;DADO_1;DADO_2
+CASA;Casa de Praia Top;550000.0;joao@email.com;120.0;3;true
+APARTAMENTO;Apto no Centro;320000.0;maria@email.com;75.0;5;false
+CASA;Sítio do Sossego;180000.0;pedro@email.com;500.0;2;true
+APARTAMENTO;Studio Moderno;250000.0;ana@email.com;45.0;1;true
+CASA;Sobrado Luxo;890000.0;lucas@email.com;200.0;4;false

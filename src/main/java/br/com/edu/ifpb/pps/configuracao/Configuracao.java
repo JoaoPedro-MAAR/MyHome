@@ -1,5 +1,6 @@
 package br.com.edu.ifpb.pps.configuracao;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -51,4 +52,13 @@ public class Configuracao {
     } 
    
 
+    public String getCaminhoArquivoUsuarios() {
+        String valor = propiedades.getProperty("caminhoUsuarioCSV", "dados/users.csv");
+        return valor;
+    }
+
+    public String getCaminhoArquivoAnuncios(){
+        String valor = propiedades.getProperty("caminhoAnuncioCSV", "dados/anuncio.csv");
+        return valor;
+    }
 }

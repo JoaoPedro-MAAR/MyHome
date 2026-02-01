@@ -1,18 +1,19 @@
 package br.com.edu.ifpb.pps.model.Imovel;
 
+import br.com.edu.ifpb.pps.Enum.FinalidadeEnum;
 import br.com.edu.ifpb.pps.Prototype.Prototype;
 import br.com.edu.ifpb.pps.filtros.visitors.ImovelVisitor;
 
 public abstract class Imovel implements Prototype<Imovel> {
     protected Double area;
     protected Double[] localizacao;
-    protected String finalidade;
+    protected FinalidadeEnum finalidade;
 
     public Imovel(){
 
     }
 
-    public Imovel(Double area, Double[] localizacao, String finalidade){
+    public Imovel(Double area, Double[] localizacao, FinalidadeEnum finalidade){
         this.area = area;
         this.localizacao = localizacao;
         this.finalidade = finalidade;
@@ -24,7 +25,7 @@ public abstract class Imovel implements Prototype<Imovel> {
         this.finalidade = other.getFinalidade();
     }
 
-    private String getFinalidade() {
+    private FinalidadeEnum getFinalidade() {
         return finalidade;
     }
 
@@ -36,7 +37,7 @@ public abstract class Imovel implements Prototype<Imovel> {
         return area;
     }
 
-    public void setFinalidade(String s){
+    public void setFinalidade(FinalidadeEnum s){
         finalidade = s;
     }
 

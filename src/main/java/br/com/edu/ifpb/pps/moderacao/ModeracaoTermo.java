@@ -11,7 +11,7 @@ public class ModeracaoTermo extends ModeracaoBase {
     public boolean moderar(Anuncio anuncio) {
         List<String> termosProibidos = Configuracao.getInstance().getTermosProbidos();
         
-        String textoAnalise = (anuncio.getTitulo() + " " + anuncio.getDescricao()).toLowerCase();
+        String textoAnalise = (anuncio.getTitulo() + " ");
         
         for (String termo : termosProibidos) {
             if (textoAnalise.contains(termo.trim().toLowerCase())) {
