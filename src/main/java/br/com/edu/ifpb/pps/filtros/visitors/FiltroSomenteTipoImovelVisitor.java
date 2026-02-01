@@ -2,6 +2,7 @@ package br.com.edu.ifpb.pps.filtros.visitors;
 
 import java.util.List;
 
+import br.com.edu.ifpb.pps.Enum.TipoImovel;
 import br.com.edu.ifpb.pps.model.Imovel.Apartamento;
 import br.com.edu.ifpb.pps.model.Imovel.Casa;
 import br.com.edu.ifpb.pps.model.Imovel.Imovel;

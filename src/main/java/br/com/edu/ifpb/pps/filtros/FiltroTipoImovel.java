@@ -2,8 +2,8 @@ package br.com.edu.ifpb.pps.filtros;
 
 import java.util.List;
 
+import br.com.edu.ifpb.pps.Enum.TipoImovel;
 import br.com.edu.ifpb.pps.filtros.visitors.FiltroSomenteTipoImovelVisitor;
-import br.com.edu.ifpb.pps.filtros.visitors.TipoImovel;
 import br.com.edu.ifpb.pps.model.Anuncio;
 
 public class FiltroTipoImovel implements FiltroAnuncio {
