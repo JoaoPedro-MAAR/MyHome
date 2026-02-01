@@ -17,6 +17,7 @@ public class Anuncio implements Prototype<Anuncio> {
     private double preco;
     private Usuario anunciante;
     private Imovel imovel;
+    private Usuario comprador;
 
     private EstadoAnuncio estado;
 
@@ -96,16 +97,6 @@ public class Anuncio implements Prototype<Anuncio> {
         return new Anuncio(this);
     }
 
-    @Override
-    public String toString() {
-        return "Anuncio{" +
-                "titulo='" + titulo + '\'' +
-                ", preco=" + preco +
-                ", anunciante=" + (anunciante != null ? anunciante : "N/A") +
-                ", imovel=" + (imovel != null ? imovel.getClass().getSimpleName() : "N/A") +
-                '}';
-    }
-
     public void setId(Integer id) {
         this.id = id;
     }
@@ -164,4 +155,24 @@ public class Anuncio implements Prototype<Anuncio> {
         this.estado.editar();
     }
 
+    public Usuario getComprador() {
+        return comprador;
+    }
+
+    public void setComprador(Usuario comprador) {
+        this.comprador = comprador;
+    }
+
+    @Override
+    public String toString() {
+        return "Anuncio{" +
+                "estado=" + estado +
+                ", comprador=" + comprador +
+                ", imovel={" + imovel +
+                "}, anunciante=" + anunciante +
+                ", preco=" + preco +
+                ", titulo='" + titulo + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }

@@ -2,9 +2,10 @@ package br.com.edu.ifpb.pps.Seeder;
 
 import br.com.edu.ifpb.pps.Banco.Banco;
 import br.com.edu.ifpb.pps.DTO.AnuncioDTO;
-import br.com.edu.ifpb.pps.DTO.Imovel.ApartamentoDTO;
-import br.com.edu.ifpb.pps.DTO.Imovel.CasaDTO;
+import br.com.edu.ifpb.pps.DTO.Imovel.ImovelDTO;
+import br.com.edu.ifpb.pps.Enum.FinalidadeEnum;
 import br.com.edu.ifpb.pps.Factory.AnuncioFactory;
+import br.com.edu.ifpb.pps.Factory.ImovelFactory;
 import br.com.edu.ifpb.pps.ImovelBuilder.ApartamentoBuilder;
 import br.com.edu.ifpb.pps.ImovelBuilder.CasaBuilder;
 import br.com.edu.ifpb.pps.ImovelBuilder.Director.DirectorApartamento;
@@ -14,7 +15,6 @@ import br.com.edu.ifpb.pps.model.Imovel.Imovel;
 import br.com.edu.ifpb.pps.model.Usuario;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,25 +22,17 @@ import java.util.List;
 
 public class ImportCSV {
 
-    public List<Usuario> importarUsuarios(String path){
+    public List<Usuario> importarUsuarios(String path) {
         List<Usuario> usuarios = new ArrayList<>();
-
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-
             String linha;
             boolean isCabecalho = true;
 
             while ((linha = br.readLine()) != null) {
-
-                if (linha.trim().isEmpty()) {
-                    continue;
-                }
-
+                if (linha.trim().isEmpty()) continue;
                 if (isCabecalho) {
                     isCabecalho = false;
-                    if (linha.toLowerCase().startsWith("email")) {
-                        continue;
-                    }
+                    continue;
                 }
 
                 String[] dados = linha.split(";");
@@ -51,17 +43,23 @@ public class ImportCSV {
 
                     Usuario usuario = new Usuario(nome, email);
 
+                    if (dados.length >= 3) {
+                        boolean admin = Boolean.parseBoolean(dados[2].trim());
+                        usuario.setAdmin(admin);
+                    } else {
+                        usuario.setAdmin(false);
+                    }
+
                     usuarios.add(usuario);
                 }
             }
-
         } catch (IOException e) {
+            e.printStackTrace();
         }
-
         return usuarios;
     }
 
-    public List<Anuncio> importarAnuncios(String caminhoArquivo) {
+    public List<Anuncio> importarAnuncios(String caminhoArquivo, List<Usuario> todosUsuarios) {
         List<Anuncio> anuncios = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
@@ -88,8 +86,13 @@ public class ImportCSV {
                     double preco = Double.parseDouble(dados[2].trim());
                     String emailUser = dados[3].trim();
 
-                    Usuario anunciante = Banco.getInstance().buscarUsuario(emailUser);
-
+                    Usuario anunciante = null;
+                    for (Usuario u : todosUsuarios) {
+                        if (u.getEmail().equalsIgnoreCase(emailUser)) {
+                            anunciante = u;
+                            break;
+                        }
+                    }
                     if (anunciante == null) {
                         continue;
                     }
@@ -99,57 +102,66 @@ public class ImportCSV {
                     anuncioDTO.preco = preco;
                     anuncioDTO.anunciante = anunciante;
                     anuncioDTO.tipo = tipo;
-
+                    ImovelDTO dto;
                     switch (tipo) {
                         case "CASA":
-                            anuncioDTO.imovel = montarCasa(dados);
+                             dto = montarCasa(dados);
                             break;
                         case "APARTAMENTO":
-                            anuncioDTO.imovel = montarApartamento(dados);
+                             dto = montarApartamento(dados);
                             break;
                         default:
                             continue;
                     }
+                    Imovel imovel = ImovelFactory.criar(anuncioDTO.tipo, dto);
+                    anuncioDTO.imovel=imovel;
                     try {
                         Anuncio anuncioPronto = AnuncioFactory.criar(anuncioDTO);
                         anuncios.add(anuncioPronto);
                     }
                     catch(IllegalArgumentException e){
+                        e.printStackTrace();
                     }
 
                 } catch (NumberFormatException e) {
+                    e.printStackTrace();
+
                 } catch (Exception e) {
+                    e.printStackTrace();
+
                 }
             }
         } catch (IOException e) {
+            e.printStackTrace();
+
         }
 
         return anuncios;
     }
 
 
-    private Imovel montarCasa(String[] dados) {
-        CasaDTO dto = new CasaDTO();
+    private ImovelDTO montarCasa(String[] dados) {
+        ImovelDTO dto = new ImovelDTO();
+        Double[] localizacao = new Double[]{Double.parseDouble(dados[5]),Double.parseDouble(dados[6])};
+        dto.localizacao = localizacao;
         dto.area = Double.parseDouble(dados[4].trim());
-        dto.qtdQuartos = Integer.parseInt(dados[5].trim());
-        dto.temQuintal = Boolean.parseBoolean(dados[6].trim());
-
-        CasaBuilder builder = new CasaBuilder();
-        DirectorCasa director = new DirectorCasa();
-
-        return director.criarComDados(builder, dto);
+        dto.qtdQuartos = Integer.parseInt(dados[8].trim());
+        dto.finalidade = FinalidadeEnum.valueOf(dados[7].toUpperCase().trim());
+        dto.temQuintal = Boolean.parseBoolean(dados[9].trim());
+        dto.temJardim = Boolean.parseBoolean(dados[10].trim());
+        return dto;
     }
 
-    private Imovel montarApartamento(String[] dados) {
-        ApartamentoDTO dto = new ApartamentoDTO();
+    private ImovelDTO montarApartamento(String[] dados) {
+        ImovelDTO dto = new ImovelDTO();
+        Double[] localizacao = new Double[]{Double.parseDouble(dados[5]),Double.parseDouble(dados[6])};
+        dto.localizacao = localizacao;
         dto.area = Double.parseDouble(dados[4].trim());
-        dto.andar = Integer.parseInt(dados[5].trim());
-
-
-        ApartamentoBuilder builder = new ApartamentoBuilder();
-        DirectorApartamento director = new DirectorApartamento();
-
-        return director.criarComDados(builder, dto);
+        dto.andar = Integer.parseInt(dados[8].trim());
+        dto.finalidade = FinalidadeEnum.valueOf(dados[7].toUpperCase().trim());
+        dto.temElevador = Boolean.parseBoolean(dados[9].trim());
+        dto.temCondominio = Boolean.parseBoolean(dados[10].trim());
+        return dto;
     }
 }
 

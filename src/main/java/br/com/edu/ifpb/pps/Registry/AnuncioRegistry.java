@@ -1,8 +1,7 @@
 package br.com.edu.ifpb.pps.Registry;
 
 import br.com.edu.ifpb.pps.DTO.AnuncioDTO;
-import br.com.edu.ifpb.pps.DTO.Imovel.ApartamentoDTO;
-import br.com.edu.ifpb.pps.DTO.Imovel.CasaDTO;
+import br.com.edu.ifpb.pps.DTO.Imovel.ImovelDTO;
 import br.com.edu.ifpb.pps.Enum.FinalidadeEnum;
 import br.com.edu.ifpb.pps.ImovelBuilder.ApartamentoBuilder;
 import br.com.edu.ifpb.pps.ImovelBuilder.CasaBuilder;
@@ -12,8 +11,7 @@ import br.com.edu.ifpb.pps.model.Anuncio;
 import br.com.edu.ifpb.pps.model.Imovel.Apartamento;
 import br.com.edu.ifpb.pps.model.Imovel.Casa;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public final class AnuncioRegistry {
     private static final AnuncioRegistry REGISTRY = new AnuncioRegistry();
@@ -25,7 +23,7 @@ public final class AnuncioRegistry {
 
     private static void carregarTemplates() {
 
-        CasaDTO casaImovelDto = new CasaDTO();
+        ImovelDTO casaImovelDto = new ImovelDTO();
         casaImovelDto.area = 120.0;
         casaImovelDto.localizacao = new Double[]{ -7.12, -34.88 };
         casaImovelDto.finalidade = FinalidadeEnum.ALUGUEL;
@@ -47,7 +45,7 @@ public final class AnuncioRegistry {
         adicionar("CASA_PADRAO", casaPadrao);
 
 
-        ApartamentoDTO aptoImovelDto = new ApartamentoDTO();
+        ImovelDTO aptoImovelDto = new ImovelDTO();
         aptoImovelDto.area = 60.0;
         aptoImovelDto.localizacao = new Double[]{ -7.11, -34.87 };
         aptoImovelDto.finalidade = FinalidadeEnum.ALUGUEL;
@@ -83,6 +81,14 @@ public final class AnuncioRegistry {
     public static void remover(String chave) {
         armazem.remove(chave);
     }
+
+    public static List<String> listarPresets() {
+        List<String> listaDeChaves = new ArrayList<>(armazem.keySet());
+        Collections.sort(listaDeChaves);
+
+        return listaDeChaves;
+    }
+
 
     public static Anuncio buscar(String chave) {
         Anuncio prototipo = armazem.get(chave);

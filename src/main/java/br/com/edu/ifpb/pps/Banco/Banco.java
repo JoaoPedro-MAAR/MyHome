@@ -10,32 +10,13 @@ import java.util.List;
 
 public class Banco {
     private static Banco instance;
-    private  List<Usuario> tb_usuarios;
-    private  List<Anuncio> tb_anuncio;
+    private  ArrayList<Usuario> tb_usuarios;
+    private  ArrayList<Anuncio> tb_anuncio;
 
 
     private Banco(){
         tb_usuarios = new ArrayList<>();
         tb_anuncio = new ArrayList<>();
-    }
-
-    private void carregarDadosDoCSV() {
-        Configuracao config = Configuracao.getInstance();
-        ImportCSV importador = new ImportCSV();
-
-        String pathUsers = config.getCaminhoArquivoUsuarios();
-        String pathAnuncios = config.getCaminhoArquivoAnuncios();
-
-        if (pathUsers != null) {
-            List<Usuario> usuariosImportados = importador.importarUsuarios(pathUsers);
-            tb_usuarios.addAll(usuariosImportados);
-        }
-
-        if (pathAnuncios != null){
-            List<Anuncio> anunciosImportados = importador.importarAnuncios(pathAnuncios);
-            tb_anuncio.addAll(anunciosImportados);
-        }
-
     }
 
     public static Banco getInstance(){
@@ -51,8 +32,40 @@ public class Banco {
         return instance;
     }
 
+    private void carregarDadosDoCSV() {
+        Configuracao config = Configuracao.getInstance();
+        ImportCSV importador = new ImportCSV();
+
+        String pathUsers = config.getCaminhoArquivoUsuarios();
+        String pathAnuncios = config.getCaminhoArquivoAnuncios();
+        List<Usuario> usuariosImportados = new ArrayList<>();
+
+        if (pathUsers != null) {
+            usuariosImportados = importador.importarUsuarios(pathUsers);
+            for(Usuario user : usuariosImportados){
+                adicionarUsuario(user);
+            }
+        }
+
+        if (pathAnuncios != null){
+            List<Anuncio> anunciosImportados = importador.importarAnuncios(pathAnuncios, usuariosImportados);
+            for(Anuncio anuncio : anunciosImportados){
+                adicionarAnuncio(anuncio);
+            }
+        }
+
+    }
+
+
+
     public  void adicionarUsuario(Usuario user){
-        Integer lastId = tb_usuarios.getLast().getId();
+        Integer lastId = 0;
+        if(tb_usuarios.isEmpty()){
+            lastId=0;
+        }
+        else if(tb_usuarios.getLast().getId() != null){
+            lastId=tb_usuarios.getLast().getId();
+        }
         user.setId(lastId+1);
         tb_usuarios.add(user);
     }
@@ -66,7 +79,13 @@ public class Banco {
     }
 
     public  void adicionarAnuncio(Anuncio anuncio){
-        Integer lastId = tb_anuncio.getLast().getId();
+        Integer lastId = 0;
+        if(tb_anuncio.isEmpty()){
+            lastId=0;
+        }
+        else if(tb_anuncio.getLast().getId() != null){
+            lastId=tb_anuncio.getLast().getId();
+        }
         anuncio.setId(lastId+1);
         tb_anuncio.add(anuncio);
     }
@@ -78,5 +97,35 @@ public class Banco {
                 return anuncio;
         }
         return null;
+    }
+
+    public List<Anuncio> buscarPorEstadoNome(String nome) {
+        ArrayList<Anuncio> anuncios = new ArrayList<>();
+        for (Anuncio anuncio : tb_anuncio) {
+            if (anuncio.getEstado().getNome().equalsIgnoreCase(nome))
+                anuncios.add(anuncio);
+        }
+        return anuncios;
+    }
+
+    public List<Anuncio> buscarPorNaoAnunciante(String email){
+        ArrayList<Anuncio> anuncios = new ArrayList<>();
+        for (Anuncio anuncio : tb_anuncio) {
+            if (!anuncio.getAnunciante().getEmail().equalsIgnoreCase(email))
+                anuncios.add(anuncio);
+        }
+        return anuncios;
+    }
+
+    public Anuncio buscarAnuncioId(Integer id){
+        for (Anuncio anuncio : tb_anuncio){
+            if (anuncio.getId().equals(id))
+                return anuncio;
+        }
+        return null;
+    }
+
+    public ArrayList<Anuncio> getAllAnuncio(){
+        return tb_anuncio;
     }
 }
