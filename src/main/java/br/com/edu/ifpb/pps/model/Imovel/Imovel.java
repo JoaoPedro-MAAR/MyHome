@@ -1,6 +1,7 @@
 package br.com.edu.ifpb.pps.model.Imovel;
 
 import br.com.edu.ifpb.pps.Prototype.Prototype;
+import br.com.edu.ifpb.pps.filtros.visitors.ImovelVisitor;
 
 public abstract class Imovel implements Prototype<Imovel> {
     protected Double area;
@@ -49,9 +50,6 @@ public abstract class Imovel implements Prototype<Imovel> {
 
     public abstract Imovel copy();
 
-
-
-
-
+    public abstract void aceitar(ImovelVisitor visitante);
 
 }
