@@ -1,8 +1,14 @@
 package br.com.edu.ifpb.pps.model;
 
 import br.com.edu.ifpb.pps.DTO.AnuncioDTO;
+import java.util.ArrayList;
+import java.util.List;
+
 import br.com.edu.ifpb.pps.Prototype.Prototype;
+import br.com.edu.ifpb.pps.estados.EstadoAnuncio;
+import br.com.edu.ifpb.pps.estados.RascunhoState;
 import br.com.edu.ifpb.pps.model.Imovel.Imovel;
+import br.com.edu.ifpb.pps.observador.Observador;
 
 public class Anuncio implements Prototype {
 
@@ -12,13 +18,23 @@ public class Anuncio implements Prototype {
     private Usuario anunciante;
     private Imovel imovel;
 
-    public Anuncio(){}
+    private EstadoAnuncio estado;
+
+    private List<Observador> observadores;
+
+    public Anuncio(){
+        this.estado = new RascunhoState();
+        this.observadores = new ArrayList<>();
+    }
 
     public Anuncio(String titulo, double preco, Usuario anunciante, Imovel imovel) {
         this.titulo = titulo;
         this.preco = preco;
         this.anunciante = anunciante;
         this.imovel = imovel;
+
+        this.estado = new RascunhoState();
+        this.observadores = new ArrayList<>();
     }
 
     public Anuncio(AnuncioDTO dto){
@@ -33,6 +49,7 @@ public class Anuncio implements Prototype {
         this.preco = other.getPreco();
         this.anunciante = other.getAnunciante();
         this.imovel = other.getImovel().copy();
+        
     }
 
     public String getTitulo() {
@@ -92,4 +109,47 @@ public class Anuncio implements Prototype {
     public Integer getId() {
         return id;
     }
+    public void enviarParaModeracao(){
+        this.estado.enviarParaModeracao(this);
+    }
+
+    public void aprovar(){
+        this.estado.aprovar(this);
+    }
+
+    public void reprovar(){
+        this.estado.reprovar(this);
+    }
+
+    public void suspender(){
+        this.estado.suspender(this);
+    }
+
+    public void vender(){
+        this.estado.vender(this);
+    }
+
+    public void editar(){
+        this.estado.editar(this);
+    }
+
+    public void setEstado(EstadoAnuncio estado) {
+        this.estado = estado;
+        notificar();
+    }
+
+    public EstadoAnuncio getEstado() {
+        return estado;
+    }
+
+    public void addObservador(Observador observador){
+        observadores.add(observador);
+    }
+
+    public void notificar(){
+        for(Observador observador : observadores){
+            observador.atualizar(this);
+        }
+    }
+
 }
