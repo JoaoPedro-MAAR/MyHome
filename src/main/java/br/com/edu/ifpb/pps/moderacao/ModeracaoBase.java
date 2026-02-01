@@ -12,10 +12,11 @@ public abstract class ModeracaoBase implements ModeracaoHandler {
         return proximo;
     }
 
-    protected boolean verificarProximo(Anuncio Anuncio) {
-        if (proximo == null) {
-            return true;
+    @Override
+    public boolean moderar(Anuncio Anuncio) {
+        if (proximo != null) {
+            return proximo.moderar(Anuncio);
         }
-        return proximo.moderar(Anuncio);
+        return true;
     }
 }
