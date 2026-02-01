@@ -22,27 +22,31 @@ public class Anuncio implements Prototype {
     private List<Observador> observadores;
 
     public Anuncio(){
-        this.estado = new RascunhoState();
         this.observadores = new ArrayList<>();
+        this.setEstado(new RascunhoState());
     }
 
     public Anuncio(String titulo, String descricao, double preco, Usuario anunciante, Imovel imovel) {
+        this.observadores = new ArrayList<>();
         this.titulo = titulo;
         this.descricao = descricao;
         this.preco = preco;
         this.anunciante = anunciante;
         this.imovel = imovel;
 
-        this.estado = new RascunhoState();
-        this.observadores = new ArrayList<>();
+        this.setEstado(new RascunhoState());
     }
 
     public Anuncio(Anuncio other){
+        this.observadores = new ArrayList<>();
+
         this.titulo = other.getTitulo();
         this.descricao = other.getDescricao();
         this.preco = other.getPreco();
         this.anunciante = other.getAnunciante();
         this.imovel = other.getImovel().copy();
+
+        this.setEstado(new RascunhoState());
         
     }
 
@@ -92,36 +96,14 @@ public class Anuncio implements Prototype {
         return new Anuncio(this);
     }
 
-    public void enviarParaModeracao(){
-        this.estado.enviarParaModeracao(this);
-    }
-
-    public void aprovar(){
-        this.estado.aprovar(this);
-    }
-
-    public void reprovar(){
-        this.estado.reprovar(this);
-    }
-
-    public void suspender(){
-        this.estado.suspender(this);
-    }
-
-    public void vender(){
-        this.estado.vender(this);
-    }
-
-    public void editar(){
-        this.estado.editar(this);
-    }
-
     public void setEstado(EstadoAnuncio estado) {
         this.estado = estado;
+        this.estado.setContext(this);
+        
         notificar();
     }
 
-    public EstadoAnuncio getEstado() {
+      public EstadoAnuncio getEstado() {
         return estado;
     }
 
@@ -133,6 +115,30 @@ public class Anuncio implements Prototype {
         for(Observador observador : observadores){
             observador.atualizar(this);
         }
+    }
+
+    public void enviarParaModeracao(){
+        this.estado.enviarParaModeracao();
+    }
+
+    public void aprovar(){
+        this.estado.aprovar();
+    }
+
+    public void reprovar(){
+        this.estado.reprovar();
+    }
+
+    public void suspender(){
+        this.estado.suspender();
+    }
+
+    public void vender(){
+        this.estado.vender();
+    }
+
+    public void editar(){
+        this.estado.editar();
     }
 
 }
