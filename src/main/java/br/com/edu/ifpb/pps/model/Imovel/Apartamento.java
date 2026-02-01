@@ -1,5 +1,7 @@
 package br.com.edu.ifpb.pps.model.Imovel;
 
+import br.com.edu.ifpb.pps.filtros.visitors.ImovelVisitor;
+
 public class Apartamento extends Imovel{
     protected int andar;
     protected Boolean temCondominio;
@@ -55,5 +57,9 @@ public class Apartamento extends Imovel{
 
     public void setTemElevador(Boolean temElevador) {
         this.temElevador = temElevador;
+    }
+
+    public void aceitar(ImovelVisitor visitante) {
+        visitante.visitar(this);
     }
 }
