@@ -1,5 +1,7 @@
 package br.com.edu.ifpb.pps.model.Imovel;
 
+import br.com.edu.ifpb.pps.filtros.visitors.ImovelVisitor;
+
 public class Casa extends Imovel{
     protected Boolean temQuintal;
     protected Integer qtdQuartos;
@@ -52,5 +54,10 @@ public class Casa extends Imovel{
 
     public void setTemJardim(Boolean temJardim) {
         this.temJardim = temJardim;
+    }
+
+    @Override
+    public void aceitar(ImovelVisitor visitante) {
+        visitante.visitar(this);
     }
 }
