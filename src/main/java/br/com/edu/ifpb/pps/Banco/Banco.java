@@ -10,8 +10,8 @@ import java.util.List;
 
 public class Banco {
     private static Banco instance;
-    private  List<Usuario> tb_usuarios;
-    private  List<Anuncio> tb_anuncio;
+    private  ArrayList<Usuario> tb_usuarios;
+    private  ArrayList<Anuncio> tb_anuncio;
 
 
     private Banco(){
@@ -75,6 +75,32 @@ public class Banco {
 
         for (Anuncio anuncio : tb_anuncio){
             if (anuncio.getTitulo().equalsIgnoreCase(titulo))
+                return anuncio;
+        }
+        return null;
+    }
+
+    public List<Anuncio> buscarPorEstadoNome(String nome) {
+        ArrayList<Anuncio> anuncios = new ArrayList<>();
+        for (Anuncio anuncio : tb_anuncio) {
+            if (anuncio.getEstado().getNome().equalsIgnoreCase(nome))
+                anuncios.add(anuncio);
+        }
+        return anuncios;
+    }
+
+    public List<Anuncio> buscarPorNaoAnunciante(String email){
+        ArrayList<Anuncio> anuncios = new ArrayList<>();
+        for (Anuncio anuncio : tb_anuncio) {
+            if (!anuncio.getAnunciante().getEmail().equalsIgnoreCase(email))
+                anuncios.add(anuncio);
+        }
+        return anuncios;
+    }
+
+    public Anuncio buscarAnuncioId(Integer id){
+        for (Anuncio anuncio : tb_anuncio){
+            if (anuncio.getId().equals(id))
                 return anuncio;
         }
         return null;

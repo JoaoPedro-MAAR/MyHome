@@ -1,8 +1,7 @@
 package br.com.edu.ifpb.pps.ImovelBuilder;
 
 import br.com.edu.ifpb.pps.DTO.AnuncioDTO;
-import br.com.edu.ifpb.pps.DTO.Imovel.ApartamentoDTO;
-import br.com.edu.ifpb.pps.DTO.Imovel.CasaDTO;
+import br.com.edu.ifpb.pps.DTO.Imovel.ImovelDTO;
 import br.com.edu.ifpb.pps.Enum.FinalidadeEnum;
 import br.com.edu.ifpb.pps.Factory.AnuncioFactory;
 import br.com.edu.ifpb.pps.ImovelBuilder.Director.DirectorApartamento;
@@ -34,7 +33,7 @@ public class main {
 
 
 
-        CasaDTO casaDto = new CasaDTO();
+        ImovelDTO casaDto = new ImovelDTO();
 
 
         casaDto.area = 180.0;
@@ -55,7 +54,7 @@ public class main {
         System.out.println(anuncioCasa.getImovel());
 
 
-        ApartamentoDTO aptoDto = new ApartamentoDTO();
+        ImovelDTO aptoDto = new ImovelDTO();
 
         aptoDto.area = 72.0;
         aptoDto.finalidade = FinalidadeEnum.ALUGUEL;
