@@ -22,7 +22,7 @@ public class Anuncio implements Prototype {
     private List<Observador> observadores;
 
     public Anuncio(){
-        this.estado = new RascunhoState();
+        this.setEstado(new RascunhoState());
         this.observadores = new ArrayList<>();
     }
 
@@ -33,7 +33,7 @@ public class Anuncio implements Prototype {
         this.anunciante = anunciante;
         this.imovel = imovel;
 
-        this.estado = new RascunhoState();
+        this.setEstado(new RascunhoState());
         this.observadores = new ArrayList<>();
     }
 
@@ -43,7 +43,6 @@ public class Anuncio implements Prototype {
         this.preco = other.getPreco();
         this.anunciante = other.getAnunciante();
         this.imovel = other.getImovel().copy();
-        
     }
 
     public String getTitulo() {
@@ -93,31 +92,33 @@ public class Anuncio implements Prototype {
     }
 
     public void enviarParaModeracao(){
-        this.estado.enviarParaModeracao(this);
+        this.estado.enviarParaModeracao();
     }
 
     public void aprovar(){
-        this.estado.aprovar(this);
+        this.estado.aprovar();
     }
 
     public void reprovar(){
-        this.estado.reprovar(this);
+        this.estado.reprovar();
     }
 
     public void suspender(){
-        this.estado.suspender(this);
+        this.estado.suspender();
     }
 
     public void vender(){
-        this.estado.vender(this);
+        this.estado.vender();
     }
 
     public void editar(){
-        this.estado.editar(this);
+        this.estado.editar();
     }
 
     public void setEstado(EstadoAnuncio estado) {
         this.estado = estado;
+        this.estado.setContext(this);
+        
         notificar();
     }
 
