@@ -76,12 +76,10 @@ public class Main {
             Anuncio a = fachada.getanuncioConfigByChave(chave);
             if (a != null) {
                 System.out.println("Anúncio criado a partir de " + chave);
-                // Lógica de salvar o clone...
             }
             return;
         }
 
-        // Para as opções 1 e 3, coletamos os dados básicos
         AnuncioDTO adto = new AnuncioDTO();
         System.out.print("Título: "); adto.titulo = scanner.nextLine();
         System.out.print("Preço: "); adto.preco = Double.parseDouble(scanner.nextLine());
@@ -110,7 +108,6 @@ public class Main {
         }
     }
 
-    // 2. MODERAR ANUNCIO
     private static void menuModeracao() {
         System.out.println("\n--- PENDENTES DE MODERAÇÃO ---");
         List<Anuncio> pendentes = fachada.listarAnuncioModeracao();
@@ -121,12 +118,10 @@ public class Main {
         System.out.print("ID para aprovar (ou Enter para cancelar): ");
         String id = scanner.nextLine();
         if (!id.isEmpty()) {
-            // Lógica de aprovação...
             System.out.println("Anúncio moderado.");
         }
     }
 
-    // 3. COMPRAR ANUNCIO
     private static void menuComprar() {
         System.out.println("\n--- ANÚNCIOS DISPONÍVEIS ---");
         List<Anuncio> anuncios = fachada.listartodosMenosUsuarioCorrente();
@@ -138,11 +133,9 @@ public class Main {
         String id = scanner.nextLine();
         if (!id.isEmpty()) {
             System.out.println("Pedido de compra realizado para o ID " + id);
-            // alvo.vender();
         }
     }
 
-    // 4. CONFIGURACOES USUARIO
     private static void menuConfiguracoes() {
         System.out.println("\n--- NOTIFICAÇÃO ---");
         System.out.println("1. Email | 2. WhatsApp | 3. SMS");

@@ -4,6 +4,7 @@ import br.com.edu.ifpb.pps.Banco.Banco;
 import br.com.edu.ifpb.pps.DTO.AnuncioDTO;
 import br.com.edu.ifpb.pps.DTO.Imovel.ImovelDTO;
 import br.com.edu.ifpb.pps.Factory.AnuncioFactory;
+import br.com.edu.ifpb.pps.Factory.ImovelFactory;
 import br.com.edu.ifpb.pps.ImovelBuilder.ApartamentoBuilder;
 import br.com.edu.ifpb.pps.ImovelBuilder.CasaBuilder;
 import br.com.edu.ifpb.pps.ImovelBuilder.Director.DirectorApartamento;
@@ -20,25 +21,17 @@ import java.util.List;
 
 public class ImportCSV {
 
-    public List<Usuario> importarUsuarios(String path){
+    public List<Usuario> importarUsuarios(String path) {
         List<Usuario> usuarios = new ArrayList<>();
-
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-
             String linha;
             boolean isCabecalho = true;
 
             while ((linha = br.readLine()) != null) {
-
-                if (linha.trim().isEmpty()) {
-                    continue;
-                }
-
+                if (linha.trim().isEmpty()) continue;
                 if (isCabecalho) {
                     isCabecalho = false;
-                    if (linha.toLowerCase().startsWith("email")) {
-                        continue;
-                    }
+                    continue;
                 }
 
                 String[] dados = linha.split(";");
@@ -49,13 +42,19 @@ public class ImportCSV {
 
                     Usuario usuario = new Usuario(nome, email);
 
+                    if (dados.length >= 3) {
+                        boolean admin = Boolean.parseBoolean(dados[2].trim());
+                        usuario.setAdmin(admin);
+                    } else {
+                        usuario.setAdmin(false);
+                    }
+
                     usuarios.add(usuario);
                 }
             }
-
         } catch (IOException e) {
+            e.printStackTrace();
         }
-
         return usuarios;
     }
 
@@ -97,17 +96,19 @@ public class ImportCSV {
                     anuncioDTO.preco = preco;
                     anuncioDTO.anunciante = anunciante;
                     anuncioDTO.tipo = tipo;
-
+                    ImovelDTO dto;
                     switch (tipo) {
                         case "CASA":
-                            anuncioDTO.imovel = montarCasa(dados);
+                             dto = montarCasa(dados);
                             break;
                         case "APARTAMENTO":
-                            anuncioDTO.imovel = montarApartamento(dados);
+                             dto = montarApartamento(dados);
                             break;
                         default:
                             continue;
                     }
+                    Imovel imovel = ImovelFactory.criar(anuncioDTO.tipo, dto);
+                    anuncioDTO.imovel=imovel;
                     try {
                         Anuncio anuncioPronto = AnuncioFactory.criar(anuncioDTO);
                         anuncios.add(anuncioPronto);
@@ -126,28 +127,22 @@ public class ImportCSV {
     }
 
 
-    private Imovel montarCasa(String[] dados) {
+    private ImovelDTO montarCasa(String[] dados) {
         ImovelDTO dto = new ImovelDTO();
         dto.area = Double.parseDouble(dados[4].trim());
         dto.qtdQuartos = Integer.parseInt(dados[5].trim());
         dto.temQuintal = Boolean.parseBoolean(dados[6].trim());
-
-        CasaBuilder builder = new CasaBuilder();
-        DirectorCasa director = new DirectorCasa();
-
-        return director.criarComDados(builder, dto);
+        dto.temJardim = Boolean.parseBoolean(dados[7].trim());
+        return dto;
     }
 
-    private Imovel montarApartamento(String[] dados) {
+    private ImovelDTO montarApartamento(String[] dados) {
         ImovelDTO dto = new ImovelDTO();
         dto.area = Double.parseDouble(dados[4].trim());
         dto.andar = Integer.parseInt(dados[5].trim());
-
-
-        ApartamentoBuilder builder = new ApartamentoBuilder();
-        DirectorApartamento director = new DirectorApartamento();
-
-        return director.criarComDados(builder, dto);
+        dto.temElevador = Boolean.parseBoolean(dados[6].trim());
+        dto.temCondominio = Boolean.parseBoolean(dados[7].trim());
+        return dto;
     }
 }
 

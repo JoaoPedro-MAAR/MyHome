@@ -1,6 +1,9 @@
-TIPO;TITULO;PRECO;EMAIL_ANUNCIANTE;AREA;DADO_1;DADO_2
-CASA;Casa de Praia Top;550000.0;joao@email.com;120.0;3;true
-APARTAMENTO;Apto no Centro;320000.0;maria@email.com;75.0;5;false
-CASA;Sítio do Sossego;180000.0;pedro@email.com;500.0;2;true
-APARTAMENTO;Studio Moderno;250000.0;ana@email.com;45.0;1;true
-CASA;Sobrado Luxo;890000.0;lucas@email.com;200.0;4;false
+TIPO;TITULO;PRECO;EMAIL_ANUNCIANTE;AREA;LATITUDE;LONGITUDE;FINALIDADE;CAMPO_EXT_1;CAMPO_EXT_2;CAMPO_EXT_3
+CASA;Casa de Luxo no Bessa;450000.0;joao@email.com;200.0;-7.088;-34.846;VENDA;4;true;true
+APARTAMENTO;Apto Vista Mar;3200.0;maria@email.com;85.0;-7.115;-34.861;ALUGUEL;12;true;true
+CASA;Casa Simples;150000.0;pedro@email.com;100.0;-7.160;-34.870;VENDA;2;false;false
+APARTAMENTO;Kitnet Estudante;800.0;ana@email.com;30.0;-7.145;-34.881;ALUGUEL;2;false;false
+APARTAMENTO;Studio Moderno Tambau;2500.0;joao@email.com;45.0;-7.118;-34.872;ALUGUEL;4;true;true
+CASA;Mansao Condominio Fechado;1200000.0;maria@email.com;350.0;-7.152;-34.821;VENDA;5;true;false
+APARTAMENTO;Cobertura Duplex;850000.0;ana@email.com;150.0;-7.110;-34.830;VENDA;20;true;true
+CASA;Casa de Campo;300000.0;pedro@email.com;180.0;-7.233;-34.900;VENDA;3;true;true
