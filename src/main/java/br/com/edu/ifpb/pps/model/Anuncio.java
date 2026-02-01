@@ -108,7 +108,11 @@ public class Anuncio implements Prototype {
     }
 
     public void addObservador(Observador observador){
-        observadores.add(observador);
+        this.observadores.add(observador);
+    }
+
+    public void removeObservador(Observador observador){
+        this.observadores.remove(observador);
     }
 
     public void notificar(){
