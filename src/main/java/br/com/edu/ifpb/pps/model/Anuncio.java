@@ -10,7 +10,7 @@ import br.com.edu.ifpb.pps.estados.RascunhoState;
 import br.com.edu.ifpb.pps.model.Imovel.Imovel;
 import br.com.edu.ifpb.pps.observador.Observador;
 
-public class Anuncio implements Prototype<Anuncio> {
+public class Anuncio implements Prototype<Anuncio>,EstadoAnuncio {
 
     private Integer id;
     private String titulo;
@@ -113,29 +113,6 @@ public class Anuncio implements Prototype<Anuncio> {
     public Integer getId() {
         return id;
     }
-    public void enviarParaModeracao(){
-        this.estado.enviarParaModeracao(this);
-    }
-
-    public void aprovar(){
-        this.estado.aprovar(this);
-    }
-
-    public void reprovar(){
-        this.estado.reprovar(this);
-    }
-
-    public void suspender(){
-        this.estado.suspender(this);
-    }
-
-    public void vender(){
-        this.estado.vender(this);
-    }
-
-    public void editar(){
-        this.estado.editar(this);
-    }
 
 
     public void setEstado(EstadoAnuncio estado) {
@@ -159,26 +136,32 @@ public class Anuncio implements Prototype<Anuncio> {
         }
     }
 
+    @Override
     public void enviarParaModeracao(){
         this.estado.enviarParaModeracao();
     }
 
+    @Override
     public void aprovar(){
         this.estado.aprovar();
     }
 
+    @Override
     public void reprovar(){
         this.estado.reprovar();
     }
 
+    @Override
     public void suspender(){
         this.estado.suspender();
     }
 
+    @Override
     public void vender(){
         this.estado.vender();
     }
 
+    @Override
     public void editar(){
         this.estado.editar();
     }
