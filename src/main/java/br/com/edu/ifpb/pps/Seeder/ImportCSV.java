@@ -2,8 +2,7 @@ package br.com.edu.ifpb.pps.Seeder;
 
 import br.com.edu.ifpb.pps.Banco.Banco;
 import br.com.edu.ifpb.pps.DTO.AnuncioDTO;
-import br.com.edu.ifpb.pps.DTO.Imovel.ApartamentoDTO;
-import br.com.edu.ifpb.pps.DTO.Imovel.CasaDTO;
+import br.com.edu.ifpb.pps.DTO.Imovel.ImovelDTO;
 import br.com.edu.ifpb.pps.Factory.AnuncioFactory;
 import br.com.edu.ifpb.pps.ImovelBuilder.ApartamentoBuilder;
 import br.com.edu.ifpb.pps.ImovelBuilder.CasaBuilder;
@@ -14,7 +13,6 @@ import br.com.edu.ifpb.pps.model.Imovel.Imovel;
 import br.com.edu.ifpb.pps.model.Usuario;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -129,7 +127,7 @@ public class ImportCSV {
 
 
     private Imovel montarCasa(String[] dados) {
-        CasaDTO dto = new CasaDTO();
+        ImovelDTO dto = new ImovelDTO();
         dto.area = Double.parseDouble(dados[4].trim());
         dto.qtdQuartos = Integer.parseInt(dados[5].trim());
         dto.temQuintal = Boolean.parseBoolean(dados[6].trim());
@@ -141,7 +139,7 @@ public class ImportCSV {
     }
 
     private Imovel montarApartamento(String[] dados) {
-        ApartamentoDTO dto = new ApartamentoDTO();
+        ImovelDTO dto = new ImovelDTO();
         dto.area = Double.parseDouble(dados[4].trim());
         dto.andar = Integer.parseInt(dados[5].trim());
 

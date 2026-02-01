@@ -10,13 +10,14 @@ import br.com.edu.ifpb.pps.estados.RascunhoState;
 import br.com.edu.ifpb.pps.model.Imovel.Imovel;
 import br.com.edu.ifpb.pps.observador.Observador;
 
-public class Anuncio implements Prototype<Anuncio>,EstadoAnuncio {
+public class Anuncio implements Prototype<Anuncio> {
 
     private Integer id;
     private String titulo;
     private double preco;
     private Usuario anunciante;
     private Imovel imovel;
+    private Usuario comprador;
 
     private EstadoAnuncio estado;
 
@@ -166,4 +167,11 @@ public class Anuncio implements Prototype<Anuncio>,EstadoAnuncio {
         this.estado.editar();
     }
 
+    public Usuario getComprador() {
+        return comprador;
+    }
+
+    public void setComprador(Usuario comprador) {
+        this.comprador = comprador;
+    }
 }

@@ -6,4 +6,10 @@ public class ImovelDTO {
     public Double[] localizacao;
     public Double area;
     public FinalidadeEnum finalidade;
+    public Boolean temCondominio;
+    public Integer andar;
+    public Boolean temElevador;
+    public Boolean temJardim;
+    public Integer qtdQuartos;
+    public Boolean temQuintal;
 }

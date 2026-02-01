@@ -1,83 +1,157 @@
 package br.com.edu.ifpb.pps;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import br.com.edu.ifpb.pps.filtros.FiltroAnuncio;
-import br.com.edu.ifpb.pps.filtros.FiltroCompositeAND;
-import br.com.edu.ifpb.pps.filtros.FiltroCompositeOR;
-import br.com.edu.ifpb.pps.filtros.FiltroFaixaPreco;
-import br.com.edu.ifpb.pps.filtros.FiltroLocalizacao;
-import br.com.edu.ifpb.pps.filtros.FiltroTipoImovel;
-import br.com.edu.ifpb.pps.filtros.FiltroTitulo;
-import br.com.edu.ifpb.pps.filtros.visitors.TipoImovel;
+import br.com.edu.ifpb.pps.DTO.AnuncioDTO;
+import br.com.edu.ifpb.pps.DTO.Imovel.ImovelDTO;
+import br.com.edu.ifpb.pps.Enum.FinalidadeEnum;
+import br.com.edu.ifpb.pps.Facade.ClientFacade;
 import br.com.edu.ifpb.pps.model.Anuncio;
 import br.com.edu.ifpb.pps.model.Usuario;
-import br.com.edu.ifpb.pps.model.Imovel.Apartamento;
-import br.com.edu.ifpb.pps.model.Imovel.Casa;
+import br.com.edu.ifpb.pps.notificacao.NotificacaoEmail;
+import br.com.edu.ifpb.pps.notificacao.NotificacaoSMS;
+import br.com.edu.ifpb.pps.notificacao.NotificacaoWhatsapp;
+
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
+    private static final Scanner scanner = new Scanner(System.in);
+    private static ClientFacade fachada = new ClientFacade();
+
     public static void main(String[] args) {
-        // Criar usuários
-        Usuario usuario1 = new Usuario("João Silva", "joao@email.com");
-        Usuario usuario2 = new Usuario("Maria Santos", "maria@email.com");
-        Usuario usuario3 = new Usuario("Pedro Costa", "pedro@email.com");
-        Usuario usuario4 = new Usuario("Ana Oliveira", "ana@email.com");
+        while (true) {
+            System.out.println("\n=== LOGIN MYHOME ===");
+            System.out.print("Digite seu email (ou 'sair'): ");
+            String email = scanner.nextLine().trim();
 
-        // Criar anúncios de teste
-        List<Anuncio> anuncios = new ArrayList<>();
+            if (email.equalsIgnoreCase("sair")) break;
 
-        // Anúncio 1: Apartamento em João Pessoa, preço 250.0
-        Apartamento apt1 = new Apartamento(85.0, new Double[]{-7.11514, -34.861}, "Venda", 3, true, true);
-        Anuncio anuncio1 = new Anuncio("Apartamento no Centro", "Apartamento confortável com ótima localização", 250.0, usuario1, apt1);
-        anuncios.add(anuncio1);
+            if (fachada.login(email)) {
+                menuPrincipal();
+                fachada.logout();
+            } else {
+                System.out.println("Usuário não encontrado.");
+            }
+        }
+    }
 
-        // Anúncio 2: Casa em João Pessoa, preço 300.0
-        Casa casa1 = new Casa(150.0, new Double[]{-7.11514, -34.861}, "Venda", true, 3, true);
-        Anuncio anuncio2 = new Anuncio("Casa no Bairro dos Ipês", "Casa espaçosa com quintal amplo", 300.0, usuario2, casa1);
-        anuncios.add(anuncio2);
+    private static void menuPrincipal() {
+        while (true) {
 
-        // Anúncio 3: Apartamento em outra localização, preço 180.0
-        Apartamento apt2 = new Apartamento(70.0, new Double[]{-7.14554, -34.881}, "Venda", 1, true, false);
-        Anuncio anuncio3 = new Anuncio("Apartamento próximo à universidade", "Quitinete para aluno", 180.0, usuario3, apt2);
-        anuncios.add(anuncio3);
+            boolean isAdmin = fachada.getUsuarioLogado().getAdmin();
 
-        // Anúncio 4: Casa em outra localização, preço 450.0
-        Casa casa2 = new Casa(200.0, new Double[]{-7.08876, -34.846}, "Venda", true, 4, false);
-        Anuncio anuncio4 = new Anuncio("Casa grande na Beira Rio", "Casa com 4 quartos e piscina", 450.0, usuario4, casa2);
-        anuncios.add(anuncio4);
+            System.out.println("\n--- MENU ---");
+            System.out.println("1. Criar Anúncio");
+            if (isAdmin) {
+                System.out.println("2. Moderar Anúncio (Admin)");
+            }
+            System.out.println("3. Comprar Anúncio");
+            System.out.println("4. Configurações Usuário");
+            System.out.println("0. Logout");
+            System.out.print("Escolha: ");
 
-        // Anúncio 5: Apartamento fora da faixa de preço, preço 600.0
-        Apartamento apt3 = new Apartamento(120.0, new Double[]{-7.11514, -34.861}, "Venda", 10, true, true);
-        Anuncio anuncio5 = new Anuncio("Apartamento Duplex Luxo", "Apartamento de luxo com vista para o mar", 600.0, usuario1, apt3);
-        anuncios.add(anuncio5);
+            String op = scanner.nextLine();
+            if (op.equals("0")) break;
 
-        // Anúncio 6: Casa com preço muito baixo, preço 80.0
-        Casa casa3 = new Casa(100.0, new Double[]{-7.16, -34.87}, "Venda", false, 2, true);
-        Anuncio anuncio6 = new Anuncio("Casa antiga para reforma", "Casa antiga mas com terreno grande", 80.0, usuario2, casa3);
-        anuncios.add(anuncio6);
+            switch (op) {
+                case "1": menuCriarAnuncio(); break;
+                case "2": if (isAdmin) menuModeracao(); else System.out.println("Acesso negado."); break;
+                case "3": menuComprar(); break;
+                case "4": menuConfiguracoes(); break;
+                default: System.out.println("Opção inválida.");
+            }
+        }
+    }
 
-        // Exibir anúncios criados
-        System.out.println("=== LISTA DE ANÚNCIOS ===");
-        for (int i = 0; i < anuncios.size(); i++) {
-            Anuncio a = anuncios.get(i);
-            System.out.println((i + 1) + ". " + a.getTitulo() + " - R$" + a.getPreco() + " - " + a.getAnunciante().getNome());
+    private static void menuCriarAnuncio() {
+        System.out.println("\n1. Criar anúncio do zero");
+        System.out.println("2. Usar configuração");
+        System.out.println("3. Criar Configuração");
+        System.out.print("Escolha: ");
+        String op = scanner.nextLine();
+
+        if (op.equals("2")) {
+            System.out.println("Presets: " + fachada.getAllPresets());
+            System.out.print("Chave: ");
+            String chave = scanner.nextLine().toUpperCase();
+            Anuncio a = fachada.getanuncioConfigByChave(chave);
+            if (a != null) {
+                System.out.println("Anúncio criado a partir de " + chave);
+                // Lógica de salvar o clone...
+            }
+            return;
         }
 
-        // Testar filtros
-        System.out.println("\n=== TESTANDO FILTROS ===");
-        List<FiltroAnuncio> filtros = List.of(
-            // new FiltroLocalizacao(new Double[]{-7.11514, -34.861}),
-            new FiltroFaixaPreco(100.0, 500.0),
-            new FiltroTipoImovel(List.of(TipoImovel.APTO))
-        );
+        // Para as opções 1 e 3, coletamos os dados básicos
+        AnuncioDTO adto = new AnuncioDTO();
+        System.out.print("Título: "); adto.titulo = scanner.nextLine();
+        System.out.print("Preço: "); adto.preco = Double.parseDouble(scanner.nextLine());
+        System.out.print("Tipo (CASA/APARTAMENTO): "); adto.tipo = scanner.nextLine().toUpperCase();
 
-        FiltroAnuncio filtroComposto = new FiltroCompositeAND(filtros);
-        
-        List<Anuncio> resultado = filtroComposto.filtrar(anuncios);
-        System.out.println("Anúncios após aplicação do filtro composto AND:");
-        for (Anuncio a : resultado) {
-            System.out.println("- " + a.getTitulo() + " - R$" + a.getPreco() + " - " + a.getAnunciante().getNome());
+        ImovelDTO idto = new ImovelDTO();
+        System.out.print("Área: "); idto.area = Double.parseDouble(scanner.nextLine());
+        idto.localizacao = new Double[]{0.0, 0.0}; // Simplificado
+        idto.finalidade = FinalidadeEnum.VENDA;
+
+        if (adto.tipo.equals("CASA")) {
+            System.out.print("Quartos: "); idto.qtdQuartos = Integer.parseInt(scanner.nextLine());
+            idto.temQuintal = true;
+        } else {
+            System.out.print("Andar: "); idto.andar = Integer.parseInt(scanner.nextLine());
         }
+
+        if (op.equals("1")) {
+            fachada.criarAnuncio(adto, idto);
+            System.out.println("Anúncio criado!");
+        } else if (op.equals("3")) {
+            System.out.print("Nome da Config: ");
+            String chave = scanner.nextLine().toUpperCase();
+            fachada.criarConfig(chave, adto, idto);
+            System.out.println("Configuração salva!");
+        }
+    }
+
+    // 2. MODERAR ANUNCIO
+    private static void menuModeracao() {
+        System.out.println("\n--- PENDENTES DE MODERAÇÃO ---");
+        List<Anuncio> pendentes = fachada.listarAnuncioModeracao();
+        for (Anuncio a : pendentes) {
+            System.out.println("[" + a.getId() + "] " + a.getTitulo());
+        }
+
+        System.out.print("ID para aprovar (ou Enter para cancelar): ");
+        String id = scanner.nextLine();
+        if (!id.isEmpty()) {
+            // Lógica de aprovação...
+            System.out.println("Anúncio moderado.");
+        }
+    }
+
+    // 3. COMPRAR ANUNCIO
+    private static void menuComprar() {
+        System.out.println("\n--- ANÚNCIOS DISPONÍVEIS ---");
+        List<Anuncio> anuncios = fachada.listartodosMenosUsuarioCorrente();
+        for (Anuncio a : anuncios) {
+            System.out.println("[" + a.getId() + "] " + a.getTitulo() + " - R$ " + a.getPreco());
+        }
+
+        System.out.print("Digite o ID para comprar: ");
+        String id = scanner.nextLine();
+        if (!id.isEmpty()) {
+            System.out.println("Pedido de compra realizado para o ID " + id);
+            // alvo.vender();
+        }
+    }
+
+    // 4. CONFIGURACOES USUARIO
+    private static void menuConfiguracoes() {
+        System.out.println("\n--- NOTIFICAÇÃO ---");
+        System.out.println("1. Email | 2. WhatsApp | 3. SMS");
+        String op = scanner.nextLine();
+        switch (op) {
+            case "1": fachada.setMeioDeNotificacao(new NotificacaoEmail()); break;
+            case "2": fachada.setMeioDeNotificacao(new NotificacaoWhatsapp()); break;
+            case "3": fachada.setMeioDeNotificacao(new NotificacaoSMS()); break;
+        }
+        System.out.println("Meio de notificação atualizado.");
     }
 }
