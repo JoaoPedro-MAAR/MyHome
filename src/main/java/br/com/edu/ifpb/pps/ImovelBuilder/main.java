@@ -1,13 +1,13 @@
 package br.com.edu.ifpb.pps.ImovelBuilder;
 
-import br.com.edu.ifpb.pps.DTO.Imovel.AnuncioDTO;
+import br.com.edu.ifpb.pps.DTO.AnuncioDTO;
 import br.com.edu.ifpb.pps.DTO.Imovel.ApartamentoDTO;
 import br.com.edu.ifpb.pps.DTO.Imovel.CasaDTO;
 import br.com.edu.ifpb.pps.Enum.FinalidadeEnum;
 import br.com.edu.ifpb.pps.Factory.AnuncioFactory;
 import br.com.edu.ifpb.pps.ImovelBuilder.Director.DirectorApartamento;
 import br.com.edu.ifpb.pps.ImovelBuilder.Director.DirectorCasa;
-import br.com.edu.ifpb.pps.ImovelBuilder.Registry.ImovelBuilderRegistry;
+import br.com.edu.ifpb.pps.Registry.TipoRegistry;
 import br.com.edu.ifpb.pps.model.Anuncio;
 import br.com.edu.ifpb.pps.model.Imovel.Apartamento;
 import br.com.edu.ifpb.pps.model.Imovel.Casa;
@@ -19,7 +19,7 @@ public class main {
 
         System.out.println("Tipos:");
 
-        System.out.println(ImovelBuilderRegistry.getAllTipos());
+        System.out.println(TipoRegistry.getAllTipos());
 
         Usuario user1 = new Usuario("Uno","1@1.com" );
         Usuario user2 = new Usuario("Duos", "2@2.com");
@@ -43,7 +43,7 @@ public class main {
         casaDto.qtdQuartos = 4;
         casaDto.temQuintal = true;
 
-        CasaBuilder casaBuilder = (CasaBuilder) ImovelBuilderRegistry.create("CASA");
+        CasaBuilder casaBuilder = new CasaBuilder();
         DirectorCasa diretorCasa = new DirectorCasa();
         Casa casa = diretorCasa.criarComDados(casaBuilder, casaDto);
         anuncioDto.imovel = casa;
@@ -66,7 +66,7 @@ public class main {
 
 
 
-        ApartamentoBuilder aptoBuilder = (ApartamentoBuilder) ImovelBuilderRegistry.create("APARTAMENTO");
+        ApartamentoBuilder aptoBuilder = new ApartamentoBuilder();
         DirectorApartamento diretorApto = new DirectorApartamento();
         Apartamento apto = diretorApto.criarComDados(aptoBuilder, aptoDto);
 

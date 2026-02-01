@@ -2,7 +2,7 @@ package br.com.edu.ifpb.pps.Prototype;
 
 import br.com.edu.ifpb.pps.Enum.FinalidadeEnum;
 import br.com.edu.ifpb.pps.ImovelBuilder.ApartamentoBuilder;
-import br.com.edu.ifpb.pps.ImovelBuilder.Director.DiretorImovel;
+import br.com.edu.ifpb.pps.Registry.AnuncioRegistry;
 import br.com.edu.ifpb.pps.model.Anuncio;
 
 public class main {

@@ -1,6 +1,6 @@
-package br.com.edu.ifpb.pps.Prototype;
+package br.com.edu.ifpb.pps.Registry;
 
-import br.com.edu.ifpb.pps.DTO.Imovel.AnuncioDTO;
+import br.com.edu.ifpb.pps.DTO.AnuncioDTO;
 import br.com.edu.ifpb.pps.DTO.Imovel.ApartamentoDTO;
 import br.com.edu.ifpb.pps.DTO.Imovel.CasaDTO;
 import br.com.edu.ifpb.pps.Enum.FinalidadeEnum;
@@ -8,7 +8,6 @@ import br.com.edu.ifpb.pps.ImovelBuilder.ApartamentoBuilder;
 import br.com.edu.ifpb.pps.ImovelBuilder.CasaBuilder;
 import br.com.edu.ifpb.pps.ImovelBuilder.Director.DirectorApartamento;
 import br.com.edu.ifpb.pps.ImovelBuilder.Director.DirectorCasa;
-import br.com.edu.ifpb.pps.ImovelBuilder.Registry.ImovelBuilderRegistry;
 import br.com.edu.ifpb.pps.model.Anuncio;
 import br.com.edu.ifpb.pps.model.Imovel.Apartamento;
 import br.com.edu.ifpb.pps.model.Imovel.Casa;
@@ -35,7 +34,7 @@ public final class AnuncioRegistry {
         casaImovelDto.temJardim = false;
 
         DirectorCasa directorCasa = new DirectorCasa();
-        Casa casaImovelPadrao = directorCasa.criarComDados(  (CasaBuilder) ImovelBuilderRegistry.create("CASA")  ,casaImovelDto);
+        Casa casaImovelPadrao = directorCasa.criarComDados(new CasaBuilder()  ,casaImovelDto);
 
         AnuncioDTO casaPadraoDto = new AnuncioDTO();
         casaPadraoDto.titulo = "Casa padrão";
@@ -57,7 +56,7 @@ public final class AnuncioRegistry {
         aptoImovelDto.temCondominio = true;
 
         DirectorApartamento directorApto = new DirectorApartamento();
-        Apartamento aptoImovelPadrao = (Apartamento) directorApto.criarComDados((ApartamentoBuilder)ImovelBuilderRegistry.create("APARTAMENTO"),aptoImovelDto);
+        Apartamento aptoImovelPadrao = (Apartamento) directorApto.criarComDados(new ApartamentoBuilder(),aptoImovelDto);
 
         AnuncioDTO aptoPadraoDto = new AnuncioDTO();
         aptoPadraoDto.titulo = "Apartamento padrão";

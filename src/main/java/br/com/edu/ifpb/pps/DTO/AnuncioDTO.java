@@ -1,4 +1,4 @@
-package br.com.edu.ifpb.pps.DTO.Imovel;
+package br.com.edu.ifpb.pps.DTO;
 
 import br.com.edu.ifpb.pps.model.Imovel.Imovel;
 import br.com.edu.ifpb.pps.model.Usuario;

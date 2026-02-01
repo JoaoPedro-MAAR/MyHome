@@ -1,7 +1,7 @@
 package br.com.edu.ifpb.pps.Factory;
 
-import br.com.edu.ifpb.pps.DTO.Imovel.AnuncioDTO;
-import br.com.edu.ifpb.pps.ImovelBuilder.Registry.ImovelBuilderRegistry;
+import br.com.edu.ifpb.pps.DTO.AnuncioDTO;
+import br.com.edu.ifpb.pps.Registry.TipoRegistry;
 import br.com.edu.ifpb.pps.model.Anuncio;
 
 public class AnuncioFactory {
@@ -19,7 +19,7 @@ public class AnuncioFactory {
         if (dto.tipo == null || dto.tipo.isBlank())
             throw new IllegalArgumentException("Tipo do imovel obrigatorio");
 
-        if (!ImovelBuilderRegistry.exists(dto.tipo))
+        if (!TipoRegistry.exists(dto.tipo))
             throw new IllegalArgumentException("Tipo de imovel nao registrado: " + dto.tipo);
 
         if (dto.imovel == null)

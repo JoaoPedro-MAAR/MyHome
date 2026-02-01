@@ -1,6 +1,6 @@
 package br.com.edu.ifpb.pps.model;
 
-import br.com.edu.ifpb.pps.DTO.Imovel.AnuncioDTO;
+import br.com.edu.ifpb.pps.DTO.AnuncioDTO;
 import br.com.edu.ifpb.pps.Prototype.Prototype;
 import br.com.edu.ifpb.pps.model.Imovel.Imovel;
 
