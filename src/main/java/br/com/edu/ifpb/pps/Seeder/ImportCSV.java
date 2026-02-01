@@ -52,13 +52,10 @@ public class ImportCSV {
                     Usuario usuario = new Usuario(nome, email);
 
                     usuarios.add(usuario);
-                } else {
-                    System.err.println("Linha inválida ignorada (faltam dados): " + linha);
                 }
             }
 
         } catch (IOException e) {
-            System.err.println("Erro ao ler arquivo de usuários (" + path + "): " + e.getMessage());
         }
 
         return usuarios;
@@ -82,7 +79,6 @@ public class ImportCSV {
                 String[] dados = linha.split(";");
 
                 if (dados.length < 5) {
-                    System.err.println("Linha incompleta ignorada: " + linha);
                     continue;
                 }
 
@@ -95,7 +91,6 @@ public class ImportCSV {
                     Usuario anunciante = Banco.getInstance().buscarUsuario(emailUser);
 
                     if (anunciante == null) {
-                        System.err.println("Usuário não encontrado para o email: " + emailUser + ". Anúncio ignorado.");
                         continue;
                     }
 
@@ -113,7 +108,6 @@ public class ImportCSV {
                             anuncioDTO.imovel = montarApartamento(dados);
                             break;
                         default:
-                            System.err.println("Tipo de imóvel desconhecido: " + tipo);
                             continue;
                     }
                     try {
@@ -121,17 +115,13 @@ public class ImportCSV {
                         anuncios.add(anuncioPronto);
                     }
                     catch(IllegalArgumentException e){
-                        System.err.println("Erro de construção de anuncio: " + linha);
                     }
 
                 } catch (NumberFormatException e) {
-                    System.err.println("Erro de formatação numérica na linha: " + linha);
                 } catch (Exception e) {
-                    System.err.println("Erro genérico ao processar linha: " + e.getMessage());
                 }
             }
         } catch (IOException e) {
-            System.err.println("Erro ao ler arquivo de anúncios: " + e.getMessage());
         }
 
         return anuncios;
