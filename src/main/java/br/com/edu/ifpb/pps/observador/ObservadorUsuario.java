@@ -7,6 +7,6 @@ public class ObservadorUsuario implements Observador {
     @Override
     public void atualizar(Anuncio anuncio) {
         String mensagem = "Anuncio: " + anuncio.getTitulo() + " mudou para o estado: " + anuncio.getEstado().getNome();
-        anuncio.getAnunciante().getMeioDeNotificacao().enviar(mensagem, anuncio.getAnunciante().getEmail());
+        anuncio.getAnunciante().enviarNotificacao(mensagem);
     }
 }

@@ -10,7 +10,7 @@ import br.com.edu.ifpb.pps.estados.RascunhoState;
 import br.com.edu.ifpb.pps.model.Imovel.Imovel;
 import br.com.edu.ifpb.pps.observador.Observador;
 
-public class Anuncio implements Prototype<Anuncio>,EstadoAnuncio {
+public class Anuncio implements Prototype<Anuncio> {
 
     private Integer id;
     private String titulo;
@@ -127,7 +127,11 @@ public class Anuncio implements Prototype<Anuncio>,EstadoAnuncio {
     }
 
     public void addObservador(Observador observador){
-        observadores.add(observador);
+        this.observadores.add(observador);
+    }
+
+    public void removeObservador(Observador observador){
+        this.observadores.remove(observador);
     }
 
     public void notificar(){

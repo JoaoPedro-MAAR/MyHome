@@ -14,7 +14,7 @@ public class ObservadorLog implements Observador{
     @Override
     public void atualizar(Anuncio anuncio) {
 
-        String arquivo = Configuracao.getInstance().getPropriedade("myhomeLog");
+        String arquivo = Configuracao.getInstance().getPropriedade("arquivoLog");
 
         if (arquivo == null) {
             arquivo = "myhomeLog.txt";
