@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.edu.ifpb.pps.filtros.FiltroAnuncio;
+import br.com.edu.ifpb.pps.filtros.FiltroCompositeAND;
 import br.com.edu.ifpb.pps.filtros.FiltroCompositeOR;
 import br.com.edu.ifpb.pps.filtros.FiltroFaixaPreco;
 import br.com.edu.ifpb.pps.filtros.FiltroLocalizacao;
+import br.com.edu.ifpb.pps.filtros.FiltroTipoImovel;
 import br.com.edu.ifpb.pps.filtros.FiltroTitulo;
+import br.com.edu.ifpb.pps.filtros.visitors.TipoImovel;
 import br.com.edu.ifpb.pps.model.Anuncio;
 import br.com.edu.ifpb.pps.model.Usuario;
 import br.com.edu.ifpb.pps.model.Imovel.Apartamento;
@@ -64,15 +67,15 @@ public class Main {
         // Testar filtros
         System.out.println("\n=== TESTANDO FILTROS ===");
         List<FiltroAnuncio> filtros = List.of(
-            new FiltroTitulo("Apartamento"),
-            new FiltroLocalizacao(new Double[]{-7.11514, -34.861}),
-            new FiltroFaixaPreco(100.0, 500.0)
+            // new FiltroLocalizacao(new Double[]{-7.11514, -34.861}),
+            new FiltroFaixaPreco(100.0, 500.0),
+            new FiltroTipoImovel(List.of(TipoImovel.APTO))
         );
 
-        FiltroAnuncio filtroComposto = new FiltroCompositeOR(filtros);
+        FiltroAnuncio filtroComposto = new FiltroCompositeAND(filtros);
         
         List<Anuncio> resultado = filtroComposto.filtrar(anuncios);
-        System.out.println("Anúncios após aplicação do filtro composto OR:");
+        System.out.println("Anúncios após aplicação do filtro composto AND:");
         for (Anuncio a : resultado) {
             System.out.println("- " + a.getTitulo() + " - R$" + a.getPreco() + " - " + a.getAnunciante().getNome());
         }
