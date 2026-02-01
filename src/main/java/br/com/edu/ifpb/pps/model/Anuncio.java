@@ -6,6 +6,7 @@ import br.com.edu.ifpb.pps.model.Imovel.Imovel;
 
 public class Anuncio implements Prototype {
 
+    private Integer id;
     private String titulo;
     private double preco;
     private Usuario anunciante;
@@ -82,5 +83,13 @@ public class Anuncio implements Prototype {
                 ", anunciante=" + (anunciante != null ? anunciante : "N/A") +
                 ", imovel=" + (imovel != null ? imovel.getClass().getSimpleName() : "N/A") +
                 '}';
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
     }
 }

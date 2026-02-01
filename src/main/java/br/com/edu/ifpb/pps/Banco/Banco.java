@@ -52,6 +52,8 @@ public class Banco {
     }
 
     public  void adicionarUsuario(Usuario user){
+        Integer lastId = tb_usuarios.getLast().getId();
+        user.setId(lastId+1);
         tb_usuarios.add(user);
     }
 
@@ -64,6 +66,8 @@ public class Banco {
     }
 
     public  void adicionarAnuncio(Anuncio anuncio){
+        Integer lastId = tb_anuncio.getLast().getId();
+        anuncio.setId(lastId+1);
         tb_anuncio.add(anuncio);
     }
 
