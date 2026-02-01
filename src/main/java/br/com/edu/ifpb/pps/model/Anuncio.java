@@ -10,7 +10,7 @@ import br.com.edu.ifpb.pps.estados.RascunhoState;
 import br.com.edu.ifpb.pps.model.Imovel.Imovel;
 import br.com.edu.ifpb.pps.observador.Observador;
 
-public class Anuncio implements Prototype {
+public class Anuncio implements Prototype<Anuncio> {
 
     private Integer id;
     private String titulo;
@@ -42,14 +42,19 @@ public class Anuncio implements Prototype {
         this.preco = dto.preco;
         this.anunciante = dto.anunciante;
         this.imovel = dto.imovel.copy();
+        this.estado = new RascunhoState();
     }
 
     public Anuncio(Anuncio other){
+        this.id = null;
         this.titulo = other.getTitulo();
         this.preco = other.getPreco();
-        this.anunciante = other.getAnunciante();
+        this.anunciante = null;
         this.imovel = other.getImovel().copy();
-        
+        this.estado = new RascunhoState();
+        this.observadores = new ArrayList<>();
+
+
     }
 
     public String getTitulo() {
@@ -64,7 +69,6 @@ public class Anuncio implements Prototype {
     public Usuario getAnunciante() {
         return anunciante;
     }
-
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
@@ -132,6 +136,7 @@ public class Anuncio implements Prototype {
     public void editar(){
         this.estado.editar(this);
     }
+
 
     public void setEstado(EstadoAnuncio estado) {
         this.estado = estado;
