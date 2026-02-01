@@ -10,7 +10,7 @@ public class Usuario {
 
 
     public Usuario(String nome, String email) {
-        this.nome = nome;
+        this.nome = nome;   
         this.email = email;
     }
 
@@ -20,6 +20,14 @@ public class Usuario {
 
     public String getEmail() {
         return email;
+    }
+
+    public void enviarNotificacao(String Mensagem) {
+        if (this.meioDeNotificacao != null) {
+            this.meioDeNotificacao.enviar(Mensagem, this.email);
+        } else {
+            System.out.println("Erro ao enviar notificação");
+        }
     }
 
     public MeioDeNotificacao getMeioDeNotificacao() {
