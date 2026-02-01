@@ -3,6 +3,7 @@ package br.com.edu.ifpb.pps.Seeder;
 import br.com.edu.ifpb.pps.Banco.Banco;
 import br.com.edu.ifpb.pps.DTO.AnuncioDTO;
 import br.com.edu.ifpb.pps.DTO.Imovel.ImovelDTO;
+import br.com.edu.ifpb.pps.Enum.FinalidadeEnum;
 import br.com.edu.ifpb.pps.Factory.AnuncioFactory;
 import br.com.edu.ifpb.pps.Factory.ImovelFactory;
 import br.com.edu.ifpb.pps.ImovelBuilder.ApartamentoBuilder;
@@ -58,7 +59,7 @@ public class ImportCSV {
         return usuarios;
     }
 
-    public List<Anuncio> importarAnuncios(String caminhoArquivo) {
+    public List<Anuncio> importarAnuncios(String caminhoArquivo, List<Usuario> todosUsuarios) {
         List<Anuncio> anuncios = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
@@ -85,8 +86,13 @@ public class ImportCSV {
                     double preco = Double.parseDouble(dados[2].trim());
                     String emailUser = dados[3].trim();
 
-                    Usuario anunciante = Banco.getInstance().buscarUsuario(emailUser);
-
+                    Usuario anunciante = null;
+                    for (Usuario u : todosUsuarios) {
+                        if (u.getEmail().equalsIgnoreCase(emailUser)) {
+                            anunciante = u;
+                            break;
+                        }
+                    }
                     if (anunciante == null) {
                         continue;
                     }
@@ -114,13 +120,20 @@ public class ImportCSV {
                         anuncios.add(anuncioPronto);
                     }
                     catch(IllegalArgumentException e){
+                        e.printStackTrace();
                     }
 
                 } catch (NumberFormatException e) {
+                    e.printStackTrace();
+
                 } catch (Exception e) {
+                    e.printStackTrace();
+
                 }
             }
         } catch (IOException e) {
+            e.printStackTrace();
+
         }
 
         return anuncios;
@@ -129,19 +142,25 @@ public class ImportCSV {
 
     private ImovelDTO montarCasa(String[] dados) {
         ImovelDTO dto = new ImovelDTO();
+        Double[] localizacao = new Double[]{Double.parseDouble(dados[5]),Double.parseDouble(dados[6])};
+        dto.localizacao = localizacao;
         dto.area = Double.parseDouble(dados[4].trim());
-        dto.qtdQuartos = Integer.parseInt(dados[5].trim());
-        dto.temQuintal = Boolean.parseBoolean(dados[6].trim());
-        dto.temJardim = Boolean.parseBoolean(dados[7].trim());
+        dto.qtdQuartos = Integer.parseInt(dados[8].trim());
+        dto.finalidade = FinalidadeEnum.valueOf(dados[7].toUpperCase().trim());
+        dto.temQuintal = Boolean.parseBoolean(dados[9].trim());
+        dto.temJardim = Boolean.parseBoolean(dados[10].trim());
         return dto;
     }
 
     private ImovelDTO montarApartamento(String[] dados) {
         ImovelDTO dto = new ImovelDTO();
+        Double[] localizacao = new Double[]{Double.parseDouble(dados[5]),Double.parseDouble(dados[6])};
+        dto.localizacao = localizacao;
         dto.area = Double.parseDouble(dados[4].trim());
-        dto.andar = Integer.parseInt(dados[5].trim());
-        dto.temElevador = Boolean.parseBoolean(dados[6].trim());
-        dto.temCondominio = Boolean.parseBoolean(dados[7].trim());
+        dto.andar = Integer.parseInt(dados[8].trim());
+        dto.finalidade = FinalidadeEnum.valueOf(dados[7].toUpperCase().trim());
+        dto.temElevador = Boolean.parseBoolean(dados[9].trim());
+        dto.temCondominio = Boolean.parseBoolean(dados[10].trim());
         return dto;
     }
 }

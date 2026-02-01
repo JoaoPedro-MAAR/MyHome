@@ -11,6 +11,7 @@ import br.com.edu.ifpb.pps.model.Imovel.Imovel;
 import br.com.edu.ifpb.pps.model.Usuario;
 import br.com.edu.ifpb.pps.notificacao.MeioDeNotificacao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClientFacade {
@@ -22,6 +23,10 @@ public class ClientFacade {
         this.banco = Banco.getInstance();
         userFacade = new UserFacade();
 
+    }
+
+    public ArrayList<Anuncio> getAllAnuncio(){
+        return banco.getAllAnuncio();
     }
 
     public Boolean login(String email){
@@ -39,6 +44,10 @@ public class ClientFacade {
     private Imovel criarImovel(String tipo, ImovelDTO dtoImovel){
         Imovel imovel = ImovelFactory.criar(tipo, dtoImovel);
         return imovel;
+    }
+
+    public Anuncio buscarPorId(Integer id){
+        return banco.buscarAnuncioId(id);
     }
 
 
