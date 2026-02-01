@@ -17,6 +17,7 @@ public class Anuncio implements Prototype<Anuncio> {
     private double preco;
     private Usuario anunciante;
     private Imovel imovel;
+    private Usuario comprador;
 
     private EstadoAnuncio estado;
 
@@ -164,4 +165,11 @@ public class Anuncio implements Prototype<Anuncio> {
         this.estado.editar();
     }
 
+    public Usuario getComprador() {
+        return comprador;
+    }
+
+    public void setComprador(Usuario comprador) {
+        this.comprador = comprador;
+    }
 }

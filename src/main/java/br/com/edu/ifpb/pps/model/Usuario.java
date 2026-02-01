@@ -6,6 +6,7 @@ public class Usuario {
     private Integer id;
     private String nome;
     private String email;
+    private Boolean isAdmin;
 
     private MeioDeNotificacao meioDeNotificacao;
 
@@ -53,5 +54,13 @@ public class Usuario {
 
     public void setMeioDeNotificacao(MeioDeNotificacao meioDeNotificacao) {
         this.meioDeNotificacao = meioDeNotificacao;
+    }
+
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
     }
 }
