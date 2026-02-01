@@ -1,6 +1,7 @@
 package br.com.edu.ifpb.pps.model.Imovel;
 
 import br.com.edu.ifpb.pps.Enum.FinalidadeEnum;
+import br.com.edu.ifpb.pps.filtros.visitors.ImovelVisitor;
 
 public class Casa extends Imovel{
     protected Boolean temQuintal;
@@ -70,5 +71,8 @@ public class Casa extends Imovel{
                 ", temJardim=" + temJardim +
                 ", temQuintal=" + temQuintal +
                 '}';
+    }
+    public void aceitar(ImovelVisitor visitante) {
+        visitante.visitar(this);
     }
 }

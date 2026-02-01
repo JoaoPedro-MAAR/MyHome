@@ -23,18 +23,18 @@ public class Anuncio implements Prototype<Anuncio> {
     private List<Observador> observadores;
 
     public Anuncio(){
-        this.estado = new RascunhoState();
         this.observadores = new ArrayList<>();
+        this.setEstado(new RascunhoState());
     }
 
     public Anuncio(String titulo, double preco, Usuario anunciante, Imovel imovel) {
+        this.observadores = new ArrayList<>();
         this.titulo = titulo;
         this.preco = preco;
         this.anunciante = anunciante;
         this.imovel = imovel;
 
-        this.estado = new RascunhoState();
-        this.observadores = new ArrayList<>();
+        this.setEstado(new RascunhoState());
     }
 
     public Anuncio(AnuncioDTO dto){
@@ -46,13 +46,13 @@ public class Anuncio implements Prototype<Anuncio> {
     }
 
     public Anuncio(Anuncio other){
+        this.observadores = new ArrayList<>();
         this.id = null;
         this.titulo = other.getTitulo();
         this.preco = other.getPreco();
         this.anunciante = null;
         this.imovel = other.getImovel().copy();
-        this.estado = new RascunhoState();
-        this.observadores = new ArrayList<>();
+        this.setEstado(new RascunhoState());
 
 
     }
@@ -140,10 +140,12 @@ public class Anuncio implements Prototype<Anuncio> {
 
     public void setEstado(EstadoAnuncio estado) {
         this.estado = estado;
+        this.estado.setContext(this);
+
         notificar();
     }
 
-    public EstadoAnuncio getEstado() {
+      public EstadoAnuncio getEstado() {
         return estado;
     }
 
@@ -155,6 +157,30 @@ public class Anuncio implements Prototype<Anuncio> {
         for(Observador observador : observadores){
             observador.atualizar(this);
         }
+    }
+
+    public void enviarParaModeracao(){
+        this.estado.enviarParaModeracao();
+    }
+
+    public void aprovar(){
+        this.estado.aprovar();
+    }
+
+    public void reprovar(){
+        this.estado.reprovar();
+    }
+
+    public void suspender(){
+        this.estado.suspender();
+    }
+
+    public void vender(){
+        this.estado.vender();
+    }
+
+    public void editar(){
+        this.estado.editar();
     }
 
 }

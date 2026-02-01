@@ -2,34 +2,42 @@ package br.com.edu.ifpb.pps.estados;
 
 import br.com.edu.ifpb.pps.model.Anuncio;
 
-public class PendenteModeracaoState  implements EstadoAnuncio {
+public class PendenteModeracaoState implements EstadoAnuncio {
+
+    private Anuncio anuncio;
+
     @Override
-    public void aprovar(Anuncio anuncio) {
-       anuncio.setEstado(new AtivoState());
+    public void setContext(Anuncio anuncio) {
+        this.anuncio = anuncio;
     }
 
     @Override
-    public void reprovar(Anuncio anuncio) {
-        anuncio.setEstado(new SuspensoState());
+    public void aprovar() {
+       this.anuncio.setEstado(new AtivoState());
     }
 
     @Override
-    public void enviarParaModeracao(Anuncio anuncio) {
+    public void reprovar() {
+        this.anuncio.setEstado(new SuspensoState());
+    }
+
+    @Override
+    public void enviarParaModeracao() {
         System.out.println("Erro");
     }
 
     @Override
-    public void suspender(Anuncio anuncio) {
+    public void suspender() {
         System.out.println("Erro");
     }
 
     @Override
-    public void vender(Anuncio anuncio) {
+    public void vender() {
         System.out.println("Erro");
     }
 
     @Override
-    public void editar(Anuncio anuncio) {
+    public void editar() {
         System.out.println("Erro");
     }
 

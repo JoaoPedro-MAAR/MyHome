@@ -1,6 +1,7 @@
 package br.com.edu.ifpb.pps.model.Imovel;
 
 import br.com.edu.ifpb.pps.Enum.FinalidadeEnum;
+import br.com.edu.ifpb.pps.filtros.visitors.ImovelVisitor;
 
 public class Apartamento extends Imovel{
     protected Integer andar;
@@ -73,5 +74,10 @@ public class Apartamento extends Imovel{
                 ", temCondominio=" + temCondominio +
                 ", temElevador=" + temElevador +
                 '}';
+
+    }
+
+    public void aceitar(ImovelVisitor visitante) {
+        visitante.visitar(this);
     }
 }
