@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 import br.com.edu.ifpb.pps.DTO.ContratoDTO;
+import br.com.edu.ifpb.pps.configuracao.Configuracao;
 
 public abstract class GeradorContrato {
     public final Contrato gerarContrato(ContratoDTO dados) {
@@ -54,7 +55,8 @@ public abstract class GeradorContrato {
     protected abstract void gerarClausulasEspecificas(Contrato contrato, ContratoDTO dados);
 
     protected void gerarArquivo(Contrato contrato) {
-        Path path = Paths.get("contratos", contrato.getId() + ".txt");
+        Configuracao config = Configuracao.getInstance();
+        Path path = Paths.get(config.getCaminhoContratos(), contrato.getId() + ".txt");
         try {
             Files.createDirectories(path.getParent());
         } catch (IOException e) {
