@@ -138,27 +138,25 @@ public class Main {
         String precoMaxStr = scanner.nextLine();
         Double precoMax = precoMaxStr.isEmpty() ? null : Double.parseDouble(precoMaxStr);
 
-        // Loop para tipos de imóvel
         ArrayList<String> tipoImovel = null;
         System.out.print("Deseja filtrar por tipo de imóvel? (s/n): ");
         String resposta = scanner.nextLine();
         if (resposta.equalsIgnoreCase("s")) {
             tipoImovel = new ArrayList<>();
             while (true) {
-                System.out.print("Tipo (CASA/APARTAMENTO) (Enter para finalizar): ");
+                System.out.print("Tipo (CASA/APTO) (Enter para finalizar): ");
                 String tipo = scanner.nextLine().toUpperCase();
                 if (tipo.isEmpty()) break;
-                if (tipo.equals("CASA") || tipo.equals("APARTAMENTO")) {
+                if (tipo.equals("CASA") || tipo.equals("APTO")) {
                     tipoImovel.add(tipo);
                     System.out.println("Tipo '" + tipo + "' adicionado.");
                 } else {
-                    System.out.println("Tipo inválido. Use CASA ou APARTAMENTO.");
+                    System.out.println("Tipo inválido. Use CASA ou APTO.");
                 }
             }
             if (tipoImovel.isEmpty()) tipoImovel = null;
         }
 
-        // Localização
         Double[] localizacao = null;
         System.out.print("Deseja filtrar por localização? (s/n): ");
         resposta = scanner.nextLine();
@@ -170,7 +168,6 @@ public class Main {
             localizacao = new Double[]{lat, lon};
         }
 
-        // Condomínio
         Boolean temCondominio = null;
         System.out.print("Possui condomínio? (s/n/Enter para pular): ");
         String condominioStr = scanner.nextLine();
@@ -200,6 +197,7 @@ public class Main {
             else if (!id.isEmpty() && id.matches("\\d+")) {
                 fachada.comprarAnuncio(Integer.parseInt(id));
                 System.out.println("Pedido de compra realizado para o ID " + id);
+                break;
             }
             else if (id.isEmpty()) break;
             
