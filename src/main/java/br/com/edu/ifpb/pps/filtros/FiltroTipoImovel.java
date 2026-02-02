@@ -1,5 +1,6 @@
 package br.com.edu.ifpb.pps.filtros;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.edu.ifpb.pps.Enum.TipoImovel;
@@ -11,7 +12,7 @@ public class FiltroTipoImovel implements FiltroAnuncio {
 
     private List<TipoImovel> tiposAceitos;
     
-    public FiltroTipoImovel(List<TipoImovel> tiposAceitos) {
+    public FiltroTipoImovel(ArrayList<TipoImovel> tiposAceitos) {
         this.tiposAceitos = tiposAceitos;
     }
 

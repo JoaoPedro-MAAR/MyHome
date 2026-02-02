@@ -1,18 +1,25 @@
 package br.com.edu.ifpb.pps.Facade;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.com.edu.ifpb.pps.Banco.Banco;
 import br.com.edu.ifpb.pps.DTO.AnuncioDTO;
 import br.com.edu.ifpb.pps.DTO.Imovel.ImovelDTO;
+import br.com.edu.ifpb.pps.Enum.TipoImovel;
 import br.com.edu.ifpb.pps.Factory.AnuncioFactory;
 import br.com.edu.ifpb.pps.Factory.ImovelFactory;
 import br.com.edu.ifpb.pps.Registry.AnuncioRegistry;
+import br.com.edu.ifpb.pps.filtros.FiltroAnuncio;
+import br.com.edu.ifpb.pps.filtros.FiltroFaixaPreco;
+import br.com.edu.ifpb.pps.filtros.FiltroTipoImovel;
+import br.com.edu.ifpb.pps.filtros.FiltroTitulo;
+import br.com.edu.ifpb.pps.filtros.FiltroLocalizacao;
+import br.com.edu.ifpb.pps.filtros.FiltroPossuiCondominio;
 import br.com.edu.ifpb.pps.model.Anuncio;
-import br.com.edu.ifpb.pps.model.Imovel.Imovel;
 import br.com.edu.ifpb.pps.model.Usuario;
+import br.com.edu.ifpb.pps.model.Imovel.Imovel;
 import br.com.edu.ifpb.pps.notificacao.MeioDeNotificacao;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ClientFacade {
     private final Banco banco;
@@ -121,8 +128,46 @@ public class ClientFacade {
         banco.adicionarAnuncio(anuncio);
     }
 
+    public List<Anuncio> buscarAnunciosComFiltro(List<FiltroAnuncio> filtrosObrigatorios, List<FiltroAnuncio> filtrosOpcionais){
+        for (FiltroAnuncio filtro : filtrosObrigatorios){
+            banco.addFiltroObrigatorio(filtro);
+        }
+        for (FiltroAnuncio filtro : filtrosOpcionais){
+            banco.addFiltroOpcional(filtro);
+        }
+        
+        return banco.getAnunciosFiltrados();
+    }
 
+    public List<Anuncio> filtrarAnuncios(String titulo, Double precoMin, Double precoMax, ArrayList<String> tipoImovel, Double[] localizacao, Boolean temCondominio) {
+        List<FiltroAnuncio> filtrosObrigatorios = new ArrayList<>();
+        List<FiltroAnuncio> filtrosOpcionais = new ArrayList<>();
+        
+        if (titulo != null) {
+            filtrosObrigatorios.add(new FiltroTitulo(titulo));
+        }
+        
+        if (precoMin != null && precoMax != null) {
+            filtrosObrigatorios.add(new FiltroFaixaPreco(precoMin, precoMax));
+        }
+        
+        if (tipoImovel != null) {
+            ArrayList<TipoImovel> tiposImovelEnum = new ArrayList<>();
+            for (String tipo : tipoImovel) {
+                tiposImovelEnum.add(TipoImovel.fromString(tipo));
+            }
+            filtrosOpcionais.add(new FiltroTipoImovel(tiposImovelEnum));
+        }
 
+        if (localizacao != null) {
+            filtrosOpcionais.add(new FiltroLocalizacao(localizacao));
+        }
 
+        if (temCondominio != null) {
+            filtrosOpcionais.add(new FiltroPossuiCondominio(temCondominio));
+        }
+        
+        return buscarAnunciosComFiltro(filtrosObrigatorios, filtrosOpcionais);
+    }
 
 }

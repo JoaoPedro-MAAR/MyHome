@@ -1,22 +1,30 @@
 package br.com.edu.ifpb.pps.Banco;
 
-import br.com.edu.ifpb.pps.Seeder.ImportCSV;
-import br.com.edu.ifpb.pps.configuracao.Configuracao;
-import br.com.edu.ifpb.pps.model.Anuncio;
-import br.com.edu.ifpb.pps.model.Usuario;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import br.com.edu.ifpb.pps.Seeder.ImportCSV;
+import br.com.edu.ifpb.pps.configuracao.Configuracao;
+import br.com.edu.ifpb.pps.filtros.FiltroAnuncio;
+import br.com.edu.ifpb.pps.filtros.FiltroCompositeAND;
+import br.com.edu.ifpb.pps.filtros.FiltroCompositeOR;
+import br.com.edu.ifpb.pps.model.Anuncio;
+import br.com.edu.ifpb.pps.model.Usuario;
 
 public class Banco {
     private static Banco instance;
     private  ArrayList<Usuario> tb_usuarios;
     private  ArrayList<Anuncio> tb_anuncio;
+    private FiltroCompositeAND filtrosObrigatorio;
+    private FiltroCompositeOR filtrosOpcional;
 
 
     private Banco(){
         tb_usuarios = new ArrayList<>();
         tb_anuncio = new ArrayList<>();
+        filtrosObrigatorio = new FiltroCompositeAND(List.of());
+        filtrosOpcional = new FiltroCompositeOR(List.of());
+
     }
 
     public static Banco getInstance(){
@@ -127,5 +135,23 @@ public class Banco {
 
     public ArrayList<Anuncio> getAllAnuncio(){
         return tb_anuncio;
+    }
+
+    public List<Anuncio> getAnunciosFiltrados(){
+        List<Anuncio> anunciosFiltrados = filtrosObrigatorio.filtrar(tb_anuncio);
+        return filtrosOpcional.filtrar(anunciosFiltrados);
+    }
+
+    public void addFiltroObrigatorio(FiltroAnuncio filtro) {
+        this.filtrosObrigatorio.adicionarFiltro(filtro);
+    }
+
+    public void addFiltroOpcional(FiltroAnuncio filtro) {
+        this.filtrosOpcional.adicionarFiltro(filtro);
+    }
+    
+    public void clearFiltros() {
+        this.filtrosObrigatorio.clearFiltros();
+        this.filtrosOpcional.clearFiltros();
     }
 }
