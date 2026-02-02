@@ -10,6 +10,7 @@ import br.com.edu.ifpb.pps.notificacao.NotificacaoEmail;
 import br.com.edu.ifpb.pps.notificacao.NotificacaoSMS;
 import br.com.edu.ifpb.pps.notificacao.NotificacaoWhatsapp;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -122,18 +123,97 @@ public class Main {
         }
     }
 
-    private static void menuComprar() {
-        System.out.println("\n--- ANÚNCIOS DISPONÍVEIS ---");
-        List<Anuncio> anuncios = fachada.listartodosMenosUsuarioCorrente();
-        for (Anuncio a : anuncios) {
-            System.out.println("[" + a.getId() + "] " + a.getTitulo() + " - R$ " + a.getPreco());
+    private static Double getValidDoubleInput(String prompt) {
+        Double value = null;
+        boolean validInput = false;
+        while (!validInput) {
+            System.out.print(prompt);
+            String input = scanner.nextLine();
+            if (input.isEmpty()) {
+                return null;
+            }
+            try {
+                value = Double.parseDouble(input);
+                validInput = true;
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Por favor, insira um número válido.");
+            }
+        }
+        return value;
+    }
+
+    private static List<Anuncio> MenuFiltrar() {
+        System.out.println("\n--- FILTRAR ANÚNCIOS ---");
+    
+        System.out.print("Título contém (Enter para pular): ");
+        String titulo = scanner.nextLine();
+        titulo = titulo.isEmpty() ? null : titulo;
+
+        Double precoMin = getValidDoubleInput("Preço mínimo (Enter para pular): ");
+
+        Double precoMax = getValidDoubleInput("Preço máximo (Enter para pular): ");
+
+        ArrayList<String> tipoImovel = null;
+        System.out.print("Deseja filtrar por tipo de imóvel? (s/n): ");
+        String resposta = scanner.nextLine();
+        if (resposta.equalsIgnoreCase("s")) {
+            tipoImovel = new ArrayList<>();
+            while (true) {
+                System.out.print("Tipo (CASA/APTO) (Enter para finalizar): ");
+                String tipo = scanner.nextLine().toUpperCase();
+                if (tipo.isEmpty()) break;
+                if (tipo.equals("CASA") || tipo.equals("APTO")) {
+                    tipoImovel.add(tipo);
+                    System.out.println("Tipo '" + tipo + "' adicionado.");
+                } else {
+                    System.out.println("Tipo inválido. Use CASA ou APTO.");
+                }
+            }
+            if (tipoImovel.isEmpty()) tipoImovel = null;
         }
 
-        System.out.print("Digite o ID para comprar: ");
-        String id = scanner.nextLine();
-        if (!id.isEmpty()) {
-            fachada.comprarAnuncio(Integer.parseInt(id));
-            System.out.println("Pedido de compra realizado para o ID " + id);
+        Double[] localizacao = null;
+        System.out.print("Deseja filtrar por localização? (s/n): ");
+        resposta = scanner.nextLine();
+        if (resposta.equalsIgnoreCase("s")) {
+            Double lat = getValidDoubleInput("Latitude: ");
+            Double lon = getValidDoubleInput("Longitude: ");
+            localizacao = new Double[]{lat, lon};
+        }
+
+        Boolean temCondominio = null;
+        System.out.print("Possui condomínio? (s/n/Enter para pular): ");
+        String condominioStr = scanner.nextLine();
+        if (condominioStr.equalsIgnoreCase("s")) {
+            temCondominio = true;
+        } else if (condominioStr.equalsIgnoreCase("n")) {
+            temCondominio = false;
+        }
+
+        return fachada.filtrarAnuncios(titulo, precoMin, precoMax, tipoImovel, localizacao, temCondominio);
+    }
+
+    private static void menuComprar() {
+        List<Anuncio> anuncios = fachada.listartodosMenosUsuarioCorrente();
+        
+        while (true) {
+            System.out.println("\n--- ANÚNCIOS DISPONÍVEIS ---");
+            for (Anuncio a : anuncios) {
+                System.out.println("[" + a.getId() + "] " + a.getTitulo() + " - R$ " + a.getPreco());
+            }
+    
+            System.out.print("Digite o ID para comprar, 'filtrar' para filtrar anúncios ou Enter para sair: ");
+            String id = scanner.nextLine();
+            if (id.equalsIgnoreCase("filtrar")){
+               anuncios = MenuFiltrar();
+            }
+            else if (!id.isEmpty() && id.matches("\\d+")) {
+                fachada.comprarAnuncio(Integer.parseInt(id));
+                System.out.println("Pedido de compra realizado para o ID " + id);
+                break;
+            }
+            else if (id.isEmpty()) break;
+            
         }
     }
 

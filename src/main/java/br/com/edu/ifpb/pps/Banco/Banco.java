@@ -22,8 +22,8 @@ public class Banco {
     private Banco(){
         tb_usuarios = new ArrayList<>();
         tb_anuncio = new ArrayList<>();
-        filtrosObrigatorio = new FiltroCompositeAND(List.of());
-        filtrosOpcional = new FiltroCompositeOR(List.of());
+        filtrosObrigatorio = new FiltroCompositeAND(new ArrayList<>());
+        filtrosOpcional = new FiltroCompositeOR(new ArrayList<>());
 
     }
 
