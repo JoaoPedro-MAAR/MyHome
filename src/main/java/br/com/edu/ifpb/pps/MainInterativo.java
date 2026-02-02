@@ -35,7 +35,6 @@ public class MainInterativo {
             if (fachada.login(email)) {
                 System.out.println("Login realizado com sucesso! Olá, " + fachada.getUsuarioLogado().getNome());
 
-                // Configuração inicial de notificação padrão (pode ser alterada no menu)
                 fachada.setMeioDeNotificacao(new NotificacaoEmail());
 
                 exibirMenuPrincipal();
@@ -80,14 +79,13 @@ public class MainInterativo {
                     menuConfiguracoes();
                     break;
                 case "0":
-                    return; // Sai do loop e faz logout
+                    return;
                 default:
                     System.out.println("Opção inválida, tente novamente.");
             }
         }
     }
 
-    // ================== 1. MENU CRIAR ANÚNCIO ==================
     private static void menuCriarAnuncio() {
         System.out.println("\n--- CRIAR ANÚNCIO ---");
         System.out.println("1. Criar anúncio do zero");
@@ -122,7 +120,6 @@ public class MainInterativo {
         fachada.criarAnuncio(dtoAnuncio, dtoImovel);
         System.out.println("Sucesso! Anúncio criado e enviado para rascunho.");
 
-        // Adiciona observadores automaticamente para vermos o fluxo funcionar
         adicionarObservadoresAutomaticamente(dtoAnuncio.titulo);
     }
 
@@ -137,7 +134,6 @@ public class MainInterativo {
         System.out.print("Digite o nome exato do preset (Chave): ");
         String chave = scanner.nextLine().toUpperCase();
 
-        // DTO apenas com as diferenças (Padrão Prototype oculto na fachada)
         AnuncioDTO diffDTO = new AnuncioDTO();
         System.out.print("Novo Título: ");
         diffDTO.titulo = scanner.nextLine();
@@ -162,7 +158,6 @@ public class MainInterativo {
         System.out.println("Configuração '" + chave + "' salva com sucesso!");
     }
 
-    // ================== 2. MENU MODERAÇÃO (ADMIN) ==================
     private static void menuModeracao() {
         System.out.println("\n--- MODERAÇÃO DE ANÚNCIOS ---");
         System.out.println("1. Listar pendentes de moderação");
@@ -204,7 +199,7 @@ public class MainInterativo {
             try {
                 Integer id = Integer.parseInt(inputId);
                 System.out.println("Processando cadeia de moderação...");
-                boolean aprovado = fachada.processarModeracao(id); // Usa a Facade refatorada
+                boolean aprovado = fachada.processarModeracao(id);
 
                 if (aprovado) {
                     System.out.println("RESULTADO: APROVADO! O anúncio agora está Ativo.");
@@ -217,7 +212,6 @@ public class MainInterativo {
         }
     }
 
-    // ================== 3. MENU COMPRAR ==================
     private static void menuComprar() {
         System.out.println("\n--- COMPRAR ANÚNCIO ---");
         System.out.println("1. Listar anúncios disponíveis");
@@ -245,8 +239,6 @@ public class MainInterativo {
     }
 
     private static void listarDisponiveisCompra() {
-        // Assume-se que 'listartodosMenosUsuarioCorrente' traz os disponíveis
-        // Mas idealmente filtraríamos apenas os com estado "Ativo"
         List<Anuncio> todos = fachada.listarAnuncioAtivos();
         System.out.println("\n--- Anúncios Disponíveis (Exceto seus) ---");
         boolean encontrou = false;
@@ -287,7 +279,6 @@ public class MainInterativo {
         }
     }
 
-    // ================== FILTROS (Compartilhado) ==================
     private static void filtrarAnunciosGeral() {
         System.out.println("\n>> Filtrar Anúncios");
         System.out.print("Título contém (Enter para pular): ");
@@ -316,7 +307,6 @@ public class MainInterativo {
         }
     }
 
-    // ================== 4. CONFIGURAÇÕES DO USUÁRIO ==================
     private static void menuConfiguracoes() {
         System.out.println("\n--- CONFIGURAÇÕES DE USUÁRIO ---");
         System.out.println("1. Mudar estratégia de notificação");
@@ -341,7 +331,6 @@ public class MainInterativo {
         }
     }
 
-    // ================== MÉTODOS AUXILIARES ==================
 
     private static AnuncioDTO lerDadosBasicosAnuncio() {
         AnuncioDTO dto = new AnuncioDTO();
@@ -363,7 +352,7 @@ public class MainInterativo {
         String fin = scanner.nextLine().toUpperCase();
         dto.finalidade = fin.equals("ALUGUEL") ? FinalidadeEnum.ALUGUEL : FinalidadeEnum.VENDA;
 
-        dto.localizacao = new Double[]{0.0, 0.0}; // Simplificado para o menu
+        dto.localizacao = new Double[]{0.0, 0.0};
 
         if ("CASA".equals(tipo)) {
             System.out.print("Qtd Quartos: ");
@@ -413,8 +402,6 @@ public class MainInterativo {
         }
     }
 
-    // Método utilitário para "colar" observadores assim que cria,
-    // já que o menu não tem um passo explícito para isso mas o sistema precisa.
     private static void adicionarObservadoresAutomaticamente(String tituloAnuncio) {
         Anuncio a = fachada.buscarAnuncioTitulo(tituloAnuncio);
         if (a != null) {

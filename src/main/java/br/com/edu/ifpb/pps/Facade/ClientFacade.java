@@ -2,6 +2,7 @@ package br.com.edu.ifpb.pps.Facade;
 
 import br.com.edu.ifpb.pps.Banco.Banco;
 import br.com.edu.ifpb.pps.DTO.AnuncioDTO;
+import br.com.edu.ifpb.pps.DTO.ContratoDTO;
 import br.com.edu.ifpb.pps.DTO.Imovel.ImovelDTO;
 import br.com.edu.ifpb.pps.Enum.FinalidadeEnum;
 import br.com.edu.ifpb.pps.Enum.TipoImovel;
@@ -13,6 +14,7 @@ import br.com.edu.ifpb.pps.TemplateContrato.GeradorContratoVenda;
 import br.com.edu.ifpb.pps.filtros.*;
 import br.com.edu.ifpb.pps.model.Anuncio;
 import br.com.edu.ifpb.pps.model.Imovel.Imovel;
+import br.com.edu.ifpb.pps.model.Usuario;
 import br.com.edu.ifpb.pps.moderacao.ModeracaoAnunciante;
 import br.com.edu.ifpb.pps.moderacao.ModeracaoHandler;
 import br.com.edu.ifpb.pps.moderacao.ModeracaoPreco;
