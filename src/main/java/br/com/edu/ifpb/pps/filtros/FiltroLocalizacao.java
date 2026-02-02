@@ -1,8 +1,8 @@
 package br.com.edu.ifpb.pps.filtros;
 
-import java.util.List;
-
 import br.com.edu.ifpb.pps.model.Anuncio;
+
+import java.util.List;
 
 public class FiltroLocalizacao implements FiltroAnuncio {
     private Double[] coordenadas;

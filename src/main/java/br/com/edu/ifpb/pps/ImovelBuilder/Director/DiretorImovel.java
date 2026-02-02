@@ -1,7 +1,6 @@
 package br.com.edu.ifpb.pps.ImovelBuilder.Director;
 
 import br.com.edu.ifpb.pps.DTO.Imovel.ImovelDTO;
-import br.com.edu.ifpb.pps.Enum.FinalidadeEnum;
 import br.com.edu.ifpb.pps.ImovelBuilder.ImovelBuilder;
 import br.com.edu.ifpb.pps.model.Imovel.Imovel;
 

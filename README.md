@@ -53,6 +53,10 @@ O foco do projeto é demonstrar a aplicação de múltiplos padrões de projeto 
 
 - Interface genérica que define o método ``copy()`` para clonagem de objetos, utilizada por Anuncio e Imovel para criar cópias independentes de instâncias existentes.
 
+### Banco
+
+- Singleton que atua como repositório em memória, gerenciando as coleções de usuários e anúncios do sistema. Carrega dados iniciais via ImportCSV e fornece operações de CRUD e busca.
+
 ---
 
 ## Padrões de Projeto Utilizados
@@ -61,7 +65,8 @@ O foco do projeto é demonstrar a aplicação de múltiplos padrões de projeto 
 
 - **Padrão:** Builder  
 - **Uso:**  
-  > (Descrever aqui como o Builder é usado para construir objetos complexos, por exemplo, anúncios ou imóveis com muitos atributos opcionais.)
+  >O padrão Builder foi implementado com múltiplos Diretores especializados, um para cada tipo de imóvel (Casa e Apartamento). Cada Diretor possui o método criarComDados, que recebe um DTO unificado contendo todas as características possíveis. O papel do Diretor é filtrar esse DTO e acionar apenas os métodos do Builder pertinentes àquele tipo específico de imóvel.
+
 
 ---
 
@@ -69,7 +74,7 @@ O foco do projeto é demonstrar a aplicação de múltiplos padrões de projeto 
 
 - **Padrão:** Prototype  
 - **Uso:**  
-  > (Descrever aqui como o Prototype é usado para clonar configurações padrão de anúncios ou imóveis, criando instâncias a partir de protótipos.)
+  >A interface Prototype foi implementada pelas classes Anuncio e Imovel para viabilizar a clonagem de objetos. Essa estrutura atende ao requisito de criação de anúncios baseados em modelos (RF02), gerenciados pela classe AnuncioRegistry. O Registry centraliza os presets, permitindo que o usuário recupere configurações existentes ou salve novas definições para uso futuro
 
 ---
 
@@ -112,6 +117,7 @@ O foco do projeto é demonstrar a aplicação de múltiplos padrões de projeto 
 - **Padrão:** Singleton  
 - **Uso:**  
   > Implementado para garantir uma única instância global que gerencia as definições do sistema, carregando de forma centralizada informações e configurações importantes, como a lista de termos proibidas para a moderação, informações necessárias para realizar envios de email e etc.
+  > O padrão singleton também foi usado para a classe Banco que guarda somente uma instancia dela mesma
 
 ---
 
@@ -128,19 +134,108 @@ O foco do projeto é demonstrar a aplicação de múltiplos padrões de projeto 
 
 - **Padrão:** Facade  
 - **Uso:**  
-  > (Descrever aqui como uma fachada simplifica o acesso às funcionalidades principais do sistema – por exemplo, criação de anúncios, busca avançada, moderação e geração de contratos – expondo uma API mais simples para a camada de apresentação.)
+  > "O padrão Facade foi implementado naturalmente à medida que a complexidade do sistema aumentou. Essa complexidade foi simplificada para o cliente final, que interage apenas com uma Fachada Principal (ClientFacade). Além disso, dentro dessa fachada principal, foi encapsulada uma Fachada de Usuário (UserFacade), especializada em gerenciar o login e o estado da sessão.
 
+
+- **Padrão:** Simple Factory
+- **Uso:**
+  > Foi implementado naturalmente visto que a Fachada enfrentava um problema, como gerar Imoveis sem ter que instanciar os Diretores e Builders
+  > A fabrica simples, surge com esse proposito de retirar a condicional da fachada ou da main, para uma camada mais interior da aplicação, com essa
+  > solução, a fachada não precisou fazer Sobrecarga de metodos para tipo de imovel. Agora para adicionar um novo tipo de Imovel será necessario: Criar
+  > seu Builder e respectivo diretor e registar um novo tipo no TipoRegistry e adicionar uma nova condicional para a Fabrica Simples, isso evita que teriamos que mexer 
+  > em camadas mais externas da aplicação. 
 ---
+
+
+## Estrutura dos dados dos arquivos CSV
+O sistema utiliza arquivos CSV para popular o banco de dados inicial (Seed). Os arquivos devem estar localizados na pasta configurada no configuracao.properties (padrão: dados/), utilizar ponto e vírgula (;) como separador e não devem conter espaços em branco nas linhas vazias.
+
+- 1. users.csv (Usuários)
+   A primeira linha é considerada cabeçalho e será ignorada. Formato: email;nome;isAdmin
+
+      + email (String): O e-mail do usuário (chave de login).
+
+       + nome (String): Nome completo do usuário.
+
+      + isAdmin (Boolean): true para administrador, false para usuário comum. (Opcional, padrão é false).
+- 2. anuncio.csv (Anúncios)
+        A primeira linha é considerada cabeçalho e será ignorada. O formato dos campos varia ligeiramente dependendo do TIPO do imóvel (primeira coluna).
+
+  + Campos Comuns (Colunas 0 a 7):
+  + TIPO;TITULO;PRECO;EMAIL_ANUNCIANTE;AREA;LATITUDE;LONGITUDE;FINALIDADE;...
+
+  + TIPO: CASA ou APARTAMENTO.
+  + TITULO: Título do anúncio.
+  +   PRECO: Valor do imóvel (Double).
+  + EMAIL_ANUNCIANTE: Deve corresponder a um email existente no users.csv.
+  
+  +   AREA: Área em m² (Double).
+
+  + LATITUDE: Coordenada geográfica (Double).
+  
+  + LONGITUDE: Coordenada geográfica (Double).
+
+  + FINALIDADE: VENDA ou ALUGUEL.
+
++  Campos Específicos por Tipo:
++ Para CASA: ...;QUARTOS;TEM_QUINTAL;TEM_JARDIM
+
+  + QUARTOS (Int): Quantidade de quartos.
+
+  + TEM_QUINTAL (Boolean): true ou false.
+
+  + TEM_JARDIM (Boolean): true ou false.
+
++ Para APARTAMENTO: ...;ANDAR;TEM_ELEVADOR;TEM_CONDOMINIO
+
+  + ANDAR (Int): Número do andar.
+
+  + TEM_ELEVADOR (Boolean): true ou false.
+
+  + TEM_CONDOMINIO (Boolean): true ou false.
 
 ## Como Executar o Projeto
 
-1. Certifique-se de ter o Java devidamente instalado e configurado (JDK compatível com o projeto).  
-2. Importe o projeto na sua IDE de preferência ou compile pelo terminal.  
-3. No arquivo configuracao.properties, defina o caminho para popular os Anuncios e Usuários nas variáveis ``caminhoUsuarioCSV`` e `caminhoAnuncioCSV`.
-4. No mesmo arquivo, definir a pasta de destino dos contratos através da variável `caminhoContratos`.
-5. Localize a classe `Main` no caminho:
+1. **Pré-requisitos**: Certifique-se de ter o **Java 21** (ou superior) devidamente instalado e configurado.
+2. **Importação**: Importe o projeto na sua IDE de preferência (IntelliJ, Eclipse, VS Code) como um projeto Maven/Gradle ou projeto Java padrão.
+3. **Maven**: Rode o build do Maven
+3. **Configuração do Ambiente**:
+   Crie um arquivo chamado `configuracao.properties` na **raiz do projeto** (fora da pasta `src`). Adicione as seguintes propriedades para configurar os caminhos e parâmetros do sistema:
+```properties
+# Caminhos para carga inicial de dados (CSV)
+caminhoUsuarioCSV=dados/users.csv
+caminhoAnuncioCSV=dados/anuncio.csv
 
-   ```text
-   src\main\java\br\com\edu\ifpb\pps\Main.java
+# Pasta onde os contratos gerados (TXT) serão salvos
+caminhoContratos=contratos
 
-6. Execute a aplicação a partir da classe `Main`.
+# Configurações de Moderação
+termosProibidos=fraude,golpe,ruim,ilegal,roubo
+
+# Configuração de Notificação por Email (Opcional - Necessário para NotificacaoEmail)
+email=seu_email@gmail.com
+senha=sua_senha_de_app
+
+# Arquivo de Log
+arquivoLog=myhomeLog.txt
+
+```
+
+
+4. **Preparação dos Dados**:
+* Crie uma pasta chamada `dados` na raiz do projeto.
+* Insira os arquivos `users.csv` e `anuncio.csv` dentro dessa pasta (conforme configurado acima) para que o sistema possa popular o banco inicial corretamente.
+* Certifique-se de que a pasta `contratos` exista ou permita que o sistema a crie.
+
+
+5. **Execução**:
+   Localize a classe principal `main` no seguinte caminho:
+```text
+src/main/java/br/com/edu/ifpb/pps/main.java
+
+```
+
+
+6. **Rodar a Aplicação**:
+   Clique com o botão direito na classe `main` e selecione **"Run 'main.main()'"**.
+* **Login**: Utilize o e-mail `araujo.aragao@academico.ifpb.edu.br` (ou outro presente no seu CSV) para acessar o sistema.

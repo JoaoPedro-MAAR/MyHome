@@ -95,6 +95,7 @@ public class Banco {
             lastId=tb_anuncio.getLast().getId();
         }
         anuncio.setId(lastId+1);
+        anuncio.enviarParaModeracao();
         tb_anuncio.add(anuncio);
     }
 

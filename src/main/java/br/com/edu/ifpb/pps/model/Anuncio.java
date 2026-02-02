@@ -1,16 +1,16 @@
 package br.com.edu.ifpb.pps.model;
 
 import br.com.edu.ifpb.pps.DTO.AnuncioDTO;
-import java.util.ArrayList;
-import java.util.List;
-
 import br.com.edu.ifpb.pps.Prototype.Prototype;
 import br.com.edu.ifpb.pps.estados.EstadoAnuncio;
 import br.com.edu.ifpb.pps.estados.RascunhoState;
 import br.com.edu.ifpb.pps.model.Imovel.Imovel;
 import br.com.edu.ifpb.pps.observador.Observador;
 
-public class Anuncio implements Prototype<Anuncio> {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Anuncio implements Prototype {
 
     private Integer id;
     private String titulo;
@@ -39,21 +39,22 @@ public class Anuncio implements Prototype<Anuncio> {
     }
 
     public Anuncio(AnuncioDTO dto){
+        this.observadores = new ArrayList<>();
         this.titulo = dto.titulo;
         this.preco = dto.preco;
         this.anunciante = dto.anunciante;
         this.imovel = dto.imovel.copy();
-        this.estado = new RascunhoState();
-    }
+        this.setEstado(new RascunhoState());    }
 
     public Anuncio(Anuncio other){
         this.observadores = new ArrayList<>();
-        this.id = null;
+        this.id = other.id;
         this.titulo = other.getTitulo();
         this.preco = other.getPreco();
-        this.anunciante = null;
+        this.anunciante = other.getAnunciante();
         this.imovel = other.getImovel().copy();
-        this.setEstado(new RascunhoState());
+        this.setEstado(other.getEstado());
+        this.comprador = other.getComprador();
 
 
     }
@@ -118,6 +119,9 @@ public class Anuncio implements Prototype<Anuncio> {
     }
 
     public void addObservador(Observador observador){
+        if (observadores == null){
+            observadores = new ArrayList<>();
+        }
         this.observadores.add(observador);
     }
 
@@ -126,8 +130,10 @@ public class Anuncio implements Prototype<Anuncio> {
     }
 
     public void notificar(){
-        for(Observador observador : observadores){
-            observador.atualizar(this);
+        if (observadores!= null) {
+            for (Observador observador : observadores) {
+                observador.atualizar(this);
+            }
         }
     }
 

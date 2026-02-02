@@ -1,12 +1,7 @@
 package br.com.edu.ifpb.pps.Facade;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 import br.com.edu.ifpb.pps.Banco.Banco;
 import br.com.edu.ifpb.pps.DTO.AnuncioDTO;
-import br.com.edu.ifpb.pps.DTO.ContratoDTO;
 import br.com.edu.ifpb.pps.DTO.Imovel.ImovelDTO;
 import br.com.edu.ifpb.pps.Enum.FinalidadeEnum;
 import br.com.edu.ifpb.pps.Enum.TipoImovel;
@@ -15,16 +10,22 @@ import br.com.edu.ifpb.pps.Factory.ImovelFactory;
 import br.com.edu.ifpb.pps.Registry.AnuncioRegistry;
 import br.com.edu.ifpb.pps.TemplateContrato.GeradorContratoAluguel;
 import br.com.edu.ifpb.pps.TemplateContrato.GeradorContratoVenda;
-import br.com.edu.ifpb.pps.filtros.FiltroAnuncio;
-import br.com.edu.ifpb.pps.filtros.FiltroFaixaPreco;
-import br.com.edu.ifpb.pps.filtros.FiltroTipoImovel;
-import br.com.edu.ifpb.pps.filtros.FiltroTitulo;
-import br.com.edu.ifpb.pps.filtros.FiltroLocalizacao;
-import br.com.edu.ifpb.pps.filtros.FiltroPossuiCondominio;
+import br.com.edu.ifpb.pps.filtros.*;
 import br.com.edu.ifpb.pps.model.Anuncio;
-import br.com.edu.ifpb.pps.model.Usuario;
 import br.com.edu.ifpb.pps.model.Imovel.Imovel;
+import br.com.edu.ifpb.pps.moderacao.ModeracaoAnunciante;
+import br.com.edu.ifpb.pps.moderacao.ModeracaoHandler;
+import br.com.edu.ifpb.pps.moderacao.ModeracaoPreco;
+import br.com.edu.ifpb.pps.moderacao.ModeracaoTermo;
 import br.com.edu.ifpb.pps.notificacao.MeioDeNotificacao;
+import br.com.edu.ifpb.pps.observador.Observador;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientFacade {
     private final Banco banco;
@@ -51,6 +52,79 @@ public class ClientFacade {
 
     public void setMeioDeNotificacao(MeioDeNotificacao meioDeNotificacao){
         userFacade.setMeioDeNotificacao(meioDeNotificacao);
+    }
+
+    public void criarAnuncioApartirDePreset(String chavePreset, AnuncioDTO novosDados) {
+        try {
+            Anuncio novoAnuncio = AnuncioRegistry.buscar(chavePreset);
+
+            if (novosDados.titulo != null) {
+                novoAnuncio.setTitulo(novosDados.titulo);
+            }
+            if (novosDados.preco != null) {
+                novoAnuncio.setPreco(novosDados.preco);
+            }
+
+
+            novoAnuncio.setAnunciante(this.userFacade.getCorrente());
+
+            banco.adicionarAnuncio(novoAnuncio);
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erro ao criar a partir do preset: " + e.getMessage());
+        }
+    }
+
+
+    public boolean processarModeracao(Integer idAnuncio) {
+        Anuncio anuncio = banco.buscarAnuncioId(idAnuncio);
+        if (anuncio == null) return false;
+
+        // 1. Enviar para estado de moderação
+        anuncio.enviarParaModeracao();
+
+        // 2. Configurar a cadeia (Chain of Responsibility)
+        ModeracaoHandler moderacaoPreco = new ModeracaoPreco();
+        ModeracaoHandler moderacaoTermo = new ModeracaoTermo();
+        ModeracaoHandler moderacaoAnunciante = new ModeracaoAnunciante();
+
+        moderacaoPreco.setNext(moderacaoTermo).setNext(moderacaoAnunciante);
+
+        // 3. Executar
+        boolean passouNosValidadores = moderacaoPreco.moderar(anuncio);
+
+        // 4. Aplicar resultado
+        if (passouNosValidadores) {
+            anuncio.aprovar();
+        } else {
+            anuncio.reprovar();
+        }
+
+        return passouNosValidadores;
+    }
+
+    public void reprovarAnuncioManual(Integer id) {
+        Anuncio anuncio = banco.buscarAnuncioId(id);
+        if (anuncio != null) anuncio.reprovar();
+    }
+
+    public void suspenderAnuncio(Integer id) {
+        Anuncio anuncio = banco.buscarAnuncioId(id);
+        if (anuncio != null) anuncio.suspender();
+    }
+
+    public void editarAnuncio(Integer id) {
+        Anuncio anuncio = banco.buscarAnuncioId(id);
+        if (anuncio != null) {
+            anuncio.editar();
+        }
+    }
+
+    public void adicionarObservador(Integer idAnuncio, Observador observador) {
+        Anuncio anuncio = banco.buscarAnuncioId(idAnuncio);
+        if (anuncio != null) {
+            anuncio.addObservador(observador);
+        }
     }
 
     private Imovel criarImovel(String tipo, ImovelDTO dtoImovel){
@@ -99,6 +173,9 @@ public class ClientFacade {
         salvarConfig(chave, anuncio);
     }
 
+    public List<Anuncio> listarAnuncioAtivos(){
+        return banco.buscarPorEstadoNome("Ativo");
+    }
 
     public List<Anuncio> listarAnuncioModeracao(){
         return banco.buscarPorEstadoNome("Pendente de Moderação");
@@ -202,5 +279,9 @@ public class ClientFacade {
         } else {
             System.out.println("Finalidade do imóvel desconhecida. Não foi possível gerar o contrato.");
         }
+    }
+
+    public Anuncio buscarAnuncioTitulo(String titulo) {
+        return banco.buscarAnuncioTitulo(titulo);
     }
 }

@@ -7,6 +7,7 @@ import br.com.edu.ifpb.pps.ImovelBuilder.ApartamentoBuilder;
 import br.com.edu.ifpb.pps.ImovelBuilder.CasaBuilder;
 import br.com.edu.ifpb.pps.ImovelBuilder.Director.DirectorApartamento;
 import br.com.edu.ifpb.pps.ImovelBuilder.Director.DirectorCasa;
+import br.com.edu.ifpb.pps.estados.RascunhoState;
 import br.com.edu.ifpb.pps.model.Anuncio;
 import br.com.edu.ifpb.pps.model.Imovel.Apartamento;
 import br.com.edu.ifpb.pps.model.Imovel.Casa;
@@ -95,6 +96,10 @@ public final class AnuncioRegistry {
         if (prototipo == null) {
             throw new IllegalArgumentException("Anúncio não encontrado: " + chave);
         }
+        prototipo.setId(null);
+        prototipo.setComprador(null);
+        prototipo.setAnunciante(null);
+        prototipo.setEstado(new RascunhoState());
         return prototipo.copy();
     }
 }

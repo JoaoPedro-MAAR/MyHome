@@ -1,16 +1,11 @@
 package br.com.edu.ifpb.pps.notificacao;
 
-import java.util.Properties;
+import br.com.edu.ifpb.pps.configuracao.Configuracao;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
-import br.com.edu.ifpb.pps.configuracao.Configuracao;
+import java.util.Properties;
 
 public class NotificacaoEmail implements MeioDeNotificacao {
 

@@ -1,9 +1,9 @@
 package br.com.edu.ifpb.pps.moderacao;
 
-import java.util.List;
-
 import br.com.edu.ifpb.pps.configuracao.Configuracao;
 import br.com.edu.ifpb.pps.model.Anuncio;
+
+import java.util.List;
 
 public class ModeracaoTermo extends ModeracaoBase {
 

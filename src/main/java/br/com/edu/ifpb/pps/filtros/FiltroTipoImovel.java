@@ -11,7 +11,7 @@ public class FiltroTipoImovel implements FiltroAnuncio {
     private FiltroSomenteTipoImovelVisitor visitor = new FiltroSomenteTipoImovelVisitor();
 
     private List<TipoImovel> tiposAceitos;
-    
+
     public FiltroTipoImovel(ArrayList<TipoImovel> tiposAceitos) {
         this.tiposAceitos = tiposAceitos;
     }
