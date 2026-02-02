@@ -135,6 +135,7 @@ public class ClientFacade {
     }
 
     public List<Anuncio> buscarAnunciosComFiltro(List<FiltroAnuncio> filtrosObrigatorios, List<FiltroAnuncio> filtrosOpcionais){
+        banco.clearFiltros();
         for (FiltroAnuncio filtro : filtrosObrigatorios){
             banco.addFiltroObrigatorio(filtro);
         }

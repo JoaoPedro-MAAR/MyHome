@@ -17,6 +17,10 @@ public class FiltroCompositeOR implements FiltroAnuncio {
 
     @Override
     public List<Anuncio> filtrar(List<Anuncio> conteudo) {
+        if (filtros.isEmpty()) {
+            return conteudo;
+        }
+
         Set<Anuncio> resultados = new LinkedHashSet<>();
         for (FiltroAnuncio filtro : filtros) {
             resultados.addAll(filtro.filtrar(conteudo));
