@@ -135,6 +135,7 @@ public class ClientFacade {
     }
 
     public List<Anuncio> buscarAnunciosComFiltro(List<FiltroAnuncio> filtrosObrigatorios, List<FiltroAnuncio> filtrosOpcionais){
+        banco.clearFiltros();
         for (FiltroAnuncio filtro : filtrosObrigatorios){
             banco.addFiltroObrigatorio(filtro);
         }
@@ -153,7 +154,7 @@ public class ClientFacade {
             filtrosObrigatorios.add(new FiltroTitulo(titulo));
         }
         
-        if (precoMin != null && precoMax != null) {
+        if (precoMin != null || precoMax != null) {
             filtrosObrigatorios.add(new FiltroFaixaPreco(precoMin, precoMax));
         }
         
