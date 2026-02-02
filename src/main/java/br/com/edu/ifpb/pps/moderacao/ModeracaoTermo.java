@@ -14,7 +14,6 @@ public class ModeracaoTermo extends ModeracaoBase {
 
        for (String termo : termosProbidios) {
             if (textoAnalise.contains(termo.trim().toLowerCase())) {
-                System.out.println("Anúncio com termo proibido.");
                 return false;
             }
        }

@@ -1,6 +1,6 @@
 package br.com.edu.ifpb.pps.Prototype;
 
-public interface Prototype<T> {
+public interface Prototype {
 
-    T copy();
+    Prototype copy();
 }

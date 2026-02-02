@@ -7,7 +7,6 @@ public class ModeracaoAnunciante extends ModeracaoBase {
     @Override
     public boolean moderar(Anuncio anuncio) {
        if (anuncio.getAnunciante() == null) {
-            System.out.println("Anúncio não possui anunciante.");
            return false;
        }
 

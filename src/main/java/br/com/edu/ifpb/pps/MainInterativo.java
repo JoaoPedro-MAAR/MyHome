@@ -5,7 +5,6 @@ import br.com.edu.ifpb.pps.DTO.Imovel.ImovelDTO;
 import br.com.edu.ifpb.pps.Enum.FinalidadeEnum;
 import br.com.edu.ifpb.pps.Facade.ClientFacade;
 import br.com.edu.ifpb.pps.model.Anuncio;
-import br.com.edu.ifpb.pps.model.Usuario;
 import br.com.edu.ifpb.pps.notificacao.NotificacaoEmail;
 import br.com.edu.ifpb.pps.notificacao.NotificacaoSMS;
 import br.com.edu.ifpb.pps.notificacao.NotificacaoWhatsapp;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Main {
+public class MainInterativo {
     private static final Scanner scanner = new Scanner(System.in);
     private static ClientFacade fachada = new ClientFacade();
 

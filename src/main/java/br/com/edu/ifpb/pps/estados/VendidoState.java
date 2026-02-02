@@ -36,7 +36,7 @@ public class VendidoState implements EstadoAnuncio {
     }
 
     private void avisarVenda() {
-        System.out.println("Anuncio Vendido");
+
     }
 
     @Override

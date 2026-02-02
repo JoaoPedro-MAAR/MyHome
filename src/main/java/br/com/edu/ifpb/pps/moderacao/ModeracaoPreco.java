@@ -7,7 +7,6 @@ public class ModeracaoPreco extends ModeracaoBase {
     @Override
     public boolean moderar(Anuncio anuncio) {
         if (anuncio.getPreco() <= 10) {
-            System.out.println("Anúncio com preço inválido");
             return false;
         }
 

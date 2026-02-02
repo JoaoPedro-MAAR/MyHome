@@ -42,9 +42,7 @@ public class NotificacaoEmail implements MeioDeNotificacao {
 
             Transport.send(message);
 
-            System.out.println("Email Enviado");
         } catch (MessagingException e) {
-            System.out.println("Erro ao enviar email");
             e.printStackTrace();
         }
     }

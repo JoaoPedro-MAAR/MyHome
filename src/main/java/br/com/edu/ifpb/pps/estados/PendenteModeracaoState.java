@@ -23,22 +23,20 @@ public class PendenteModeracaoState implements EstadoAnuncio {
 
     @Override
     public void enviarParaModeracao() {
-        System.out.println("Erro");
+
     }
 
     @Override
     public void suspender() {
-        System.out.println("Erro");
+
     }
 
     @Override
     public void vender() {
-        System.out.println("Erro");
     }
-
     @Override
     public void editar() {
-        System.out.println("Erro");
+
     }
 
     @Override

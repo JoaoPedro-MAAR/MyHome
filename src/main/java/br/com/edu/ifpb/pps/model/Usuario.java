@@ -43,8 +43,6 @@ public class Usuario {
     public void enviarNotificacao(String mensagem){
         if (this.meioDeNotificacao != null){
             this.meioDeNotificacao.enviar(mensagem, this.email);
-        } else {
-            System.out.println("Erro");
         }
     }
 
