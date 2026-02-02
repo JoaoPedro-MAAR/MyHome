@@ -154,7 +154,7 @@ public class ClientFacade {
             filtrosObrigatorios.add(new FiltroTitulo(titulo));
         }
         
-        if (precoMin != null && precoMax != null) {
+        if (precoMin != null || precoMax != null) {
             filtrosObrigatorios.add(new FiltroFaixaPreco(precoMin, precoMax));
         }
         
