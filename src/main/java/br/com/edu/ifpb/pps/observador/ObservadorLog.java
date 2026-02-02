@@ -1,13 +1,13 @@
 package br.com.edu.ifpb.pps.observador;
 
+import br.com.edu.ifpb.pps.configuracao.Configuracao;
+import br.com.edu.ifpb.pps.model.Anuncio;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
-import br.com.edu.ifpb.pps.configuracao.Configuracao;
-import br.com.edu.ifpb.pps.model.Anuncio;
 
 public class ObservadorLog implements Observador{
 

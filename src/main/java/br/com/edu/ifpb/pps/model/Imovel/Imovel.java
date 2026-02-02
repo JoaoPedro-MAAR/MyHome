@@ -4,7 +4,7 @@ import br.com.edu.ifpb.pps.Enum.FinalidadeEnum;
 import br.com.edu.ifpb.pps.Prototype.Prototype;
 import br.com.edu.ifpb.pps.filtros.visitors.ImovelVisitor;
 
-public abstract class Imovel implements Prototype<Imovel> {
+public abstract class Imovel implements Prototype {
     protected Double area;
     protected Double[] localizacao;
     protected FinalidadeEnum finalidade;

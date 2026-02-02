@@ -1,15 +1,10 @@
 package br.com.edu.ifpb.pps.Seeder;
 
-import br.com.edu.ifpb.pps.Banco.Banco;
 import br.com.edu.ifpb.pps.DTO.AnuncioDTO;
 import br.com.edu.ifpb.pps.DTO.Imovel.ImovelDTO;
 import br.com.edu.ifpb.pps.Enum.FinalidadeEnum;
 import br.com.edu.ifpb.pps.Factory.AnuncioFactory;
 import br.com.edu.ifpb.pps.Factory.ImovelFactory;
-import br.com.edu.ifpb.pps.ImovelBuilder.ApartamentoBuilder;
-import br.com.edu.ifpb.pps.ImovelBuilder.CasaBuilder;
-import br.com.edu.ifpb.pps.ImovelBuilder.Director.DirectorApartamento;
-import br.com.edu.ifpb.pps.ImovelBuilder.Director.DirectorCasa;
 import br.com.edu.ifpb.pps.model.Anuncio;
 import br.com.edu.ifpb.pps.model.Imovel.Imovel;
 import br.com.edu.ifpb.pps.model.Usuario;

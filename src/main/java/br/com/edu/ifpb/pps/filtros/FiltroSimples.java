@@ -1,9 +1,9 @@
 package br.com.edu.ifpb.pps.filtros;
 
+import br.com.edu.ifpb.pps.model.Anuncio;
+
 import java.util.List;
 import java.util.function.Predicate;
-
-import br.com.edu.ifpb.pps.model.Anuncio;
 
 public abstract class FiltroSimples implements FiltroAnuncio {
     protected String parametro;
