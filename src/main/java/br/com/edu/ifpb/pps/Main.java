@@ -123,6 +123,25 @@ public class Main {
         }
     }
 
+    private static Double getValidDoubleInput(String prompt) {
+        Double value = null;
+        boolean validInput = false;
+        while (!validInput) {
+            System.out.print(prompt);
+            String input = scanner.nextLine();
+            if (input.isEmpty()) {
+                return null;
+            }
+            try {
+                value = Double.parseDouble(input);
+                validInput = true;
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Por favor, insira um número válido.");
+            }
+        }
+        return value;
+    }
+
     private static List<Anuncio> MenuFiltrar() {
         System.out.println("\n--- FILTRAR ANÚNCIOS ---");
     
@@ -130,13 +149,9 @@ public class Main {
         String titulo = scanner.nextLine();
         titulo = titulo.isEmpty() ? null : titulo;
 
-        System.out.print("Preço mínimo (Enter para pular): ");
-        String precoMinStr = scanner.nextLine();
-        Double precoMin = precoMinStr.isEmpty() ? null : Double.parseDouble(precoMinStr);
+        Double precoMin = getValidDoubleInput("Preço mínimo (Enter para pular): ");
 
-        System.out.print("Preço máximo (Enter para pular): ");        
-        String precoMaxStr = scanner.nextLine();
-        Double precoMax = precoMaxStr.isEmpty() ? null : Double.parseDouble(precoMaxStr);
+        Double precoMax = getValidDoubleInput("Preço máximo (Enter para pular): ");
 
         ArrayList<String> tipoImovel = null;
         System.out.print("Deseja filtrar por tipo de imóvel? (s/n): ");
@@ -161,10 +176,8 @@ public class Main {
         System.out.print("Deseja filtrar por localização? (s/n): ");
         resposta = scanner.nextLine();
         if (resposta.equalsIgnoreCase("s")) {
-            System.out.print("Latitude: ");
-            Double lat = Double.parseDouble(scanner.nextLine());
-            System.out.print("Longitude: ");
-            Double lon = Double.parseDouble(scanner.nextLine());
+            Double lat = getValidDoubleInput("Latitude: ");
+            Double lon = getValidDoubleInput("Longitude: ");
             localizacao = new Double[]{lat, lon};
         }
 

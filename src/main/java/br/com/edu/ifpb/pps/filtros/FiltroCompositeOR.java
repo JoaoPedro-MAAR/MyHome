@@ -9,9 +9,9 @@ import br.com.edu.ifpb.pps.model.Anuncio;
 
 public class FiltroCompositeOR implements FiltroAnuncio {
 
-    private List<FiltroAnuncio> filtros;
+    private ArrayList<FiltroAnuncio> filtros;
 
-    public FiltroCompositeOR(List<FiltroAnuncio> filtros) {
+    public FiltroCompositeOR(ArrayList<FiltroAnuncio> filtros) {
         this.filtros = filtros;
     }
 
@@ -36,7 +36,7 @@ public class FiltroCompositeOR implements FiltroAnuncio {
         filtros.remove(filtro);
     }
 
-    public List<FiltroAnuncio> getFiltros() {
+    public ArrayList<FiltroAnuncio> getFiltros() {
         return filtros;
     }
 
