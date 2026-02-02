@@ -25,7 +25,7 @@ public abstract class Imovel implements Prototype<Imovel> {
         this.finalidade = other.getFinalidade();
     }
 
-    private FinalidadeEnum getFinalidade() {
+    public FinalidadeEnum getFinalidade() {
         return finalidade;
     }
 

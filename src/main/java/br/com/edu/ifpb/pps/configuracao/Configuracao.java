@@ -61,4 +61,9 @@ public class Configuracao {
         String valor = propiedades.getProperty("caminhoAnuncioCSV", "dados/anuncio.csv");
         return valor;
     }
+
+    public String getCaminhoContratos() {
+        String valor = propiedades.getProperty("caminhoContratos", "contratos");
+        return valor;
+    }
 }

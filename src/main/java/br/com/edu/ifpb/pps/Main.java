@@ -118,7 +118,7 @@ public class Main {
         System.out.print("ID para aprovar (ou Enter para cancelar): ");
         String id = scanner.nextLine();
         if (!id.isEmpty()) {
-            System.out.println("Anúncio moderado.");
+            fachada.aprovarAnuncio(Integer.parseInt(id));
         }
     }
 
@@ -132,6 +132,7 @@ public class Main {
         System.out.print("Digite o ID para comprar: ");
         String id = scanner.nextLine();
         if (!id.isEmpty()) {
+            fachada.comprarAnuncio(Integer.parseInt(id));
             System.out.println("Pedido de compra realizado para o ID " + id);
         }
     }
