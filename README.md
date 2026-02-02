@@ -53,10 +53,6 @@ O foco do projeto é demonstrar a aplicação de múltiplos padrões de projeto 
 
 - Interface genérica que define o método ``copy()`` para clonagem de objetos, utilizada por Anuncio e Imovel para criar cópias independentes de instâncias existentes.
 
-### Banco
-
-- Singleton que atua como repositório em memória, gerenciando as coleções de usuários e anúncios do sistema. Carrega dados iniciais via ImportCSV e fornece operações de CRUD e busca.
-
 ---
 
 ## Padrões de Projeto Utilizados
