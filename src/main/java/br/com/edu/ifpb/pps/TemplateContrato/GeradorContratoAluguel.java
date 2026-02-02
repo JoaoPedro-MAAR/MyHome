@@ -10,6 +10,21 @@ public class GeradorContratoAluguel extends GeradorContrato {
     }
 
     @Override
+    protected void validarDadosEspecificos(ContratoDTO dados) {
+        if (dados.dataInicio == null || dados.dataFim == null) {
+            throw new IllegalArgumentException("Datas de início e fim do contrato devem ser fornecidas para contratos de aluguel.");
+        }
+
+        if (dados.dataFim.isBefore(dados.dataInicio)) {
+            throw new IllegalArgumentException("Data de fim do contrato não pode ser anterior à data de início.");
+        }
+
+        if (dados.frequenciaPagamento == null || dados.frequenciaPagamento.isEmpty()) {
+            throw new IllegalArgumentException("Frequência de pagamento deve ser especificada para contratos de aluguel.");
+        }
+    }
+
+    @Override
     protected void gerarClausulasEspecificas(Contrato contrato, ContratoDTO dados) {
         contrato.adicionarClausula("Cláusula 3 - DO VALOR DO ALUGUEL: O LOCATÁRIO pagará ao LOCADOR o valor de R$ " + 
             dados.anuncio.getPreco() + ", com vencimento todo dia 10 de cada mês, de forma " + dados.frequenciaPagamento + ".");

@@ -1,15 +1,20 @@
 package br.com.edu.ifpb.pps.Facade;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.edu.ifpb.pps.Banco.Banco;
 import br.com.edu.ifpb.pps.DTO.AnuncioDTO;
+import br.com.edu.ifpb.pps.DTO.ContratoDTO;
 import br.com.edu.ifpb.pps.DTO.Imovel.ImovelDTO;
+import br.com.edu.ifpb.pps.Enum.FinalidadeEnum;
 import br.com.edu.ifpb.pps.Enum.TipoImovel;
 import br.com.edu.ifpb.pps.Factory.AnuncioFactory;
 import br.com.edu.ifpb.pps.Factory.ImovelFactory;
 import br.com.edu.ifpb.pps.Registry.AnuncioRegistry;
+import br.com.edu.ifpb.pps.TemplateContrato.GeradorContratoAluguel;
+import br.com.edu.ifpb.pps.TemplateContrato.GeradorContratoVenda;
 import br.com.edu.ifpb.pps.filtros.FiltroAnuncio;
 import br.com.edu.ifpb.pps.filtros.FiltroFaixaPreco;
 import br.com.edu.ifpb.pps.filtros.FiltroTipoImovel;
@@ -116,6 +121,7 @@ public class ClientFacade {
         Anuncio anuncio = banco.buscarAnuncioId(id);
         anuncio.getEstado().vender();
         anuncio.setComprador(userFacade.getCorrente());
+        this.gerarContrato(id);
     }
 
 
@@ -170,4 +176,30 @@ public class ClientFacade {
         return buscarAnunciosComFiltro(filtrosObrigatorios, filtrosOpcionais);
     }
 
+    public void gerarContrato(Integer idAnuncio) {
+        Anuncio anuncio = banco.buscarAnuncioId(idAnuncio);
+
+        if (anuncio.getImovel().getFinalidade().equals(FinalidadeEnum.ALUGUEL)) {
+            GeradorContratoAluguel gerador = new GeradorContratoAluguel();
+            ContratoDTO contrato = new ContratoDTO();
+
+            contrato.anuncio = anuncio;
+            contrato.dataInicio = LocalDateTime.now().toLocalDate();
+            contrato.dataFim = LocalDateTime.now().toLocalDate().plus(java.time.Period.ofMonths(1));
+            contrato.frequenciaPagamento = "Mensal";
+
+            gerador.gerarContrato(contrato);
+
+        } else if (anuncio.getImovel().getFinalidade().equals(FinalidadeEnum.VENDA)) {
+            GeradorContratoVenda gerador = new GeradorContratoVenda();
+            ContratoDTO contrato = new ContratoDTO();
+            
+            contrato.anuncio = anuncio;
+            contrato.formaPagamento = "À vista";
+
+            gerador.gerarContrato(contrato);
+        } else {
+            System.out.println("Finalidade do imóvel desconhecida. Não foi possível gerar o contrato.");
+        }
+    }
 }

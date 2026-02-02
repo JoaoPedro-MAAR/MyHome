@@ -11,6 +11,7 @@ import br.com.edu.ifpb.pps.DTO.ContratoDTO;
 public abstract class GeradorContrato {
     public final Contrato gerarContrato(ContratoDTO dados) {
         validarDados(dados);
+        validarDadosEspecificos(dados);
         Contrato contrato = criarContratoVazio(dados);
         gerarClausulasPadrao(contrato, dados);
         gerarClausulasEspecificas(contrato, dados);
@@ -23,13 +24,15 @@ public abstract class GeradorContrato {
         if (dados.anuncio == null) {
             throw new IllegalArgumentException("Anúncio não pode ser nulo");
         }
-        if (dados.interessado == null) {
+        if (dados.anuncio.getComprador() == null) {
             throw new IllegalArgumentException("Interessado não pode ser nulo");
         }
-        if (dados.anunciante == null) {
+        if (dados.anuncio.getAnunciante() == null) {
             throw new IllegalArgumentException("Anunciante não pode ser nulo");
         }
     }
+
+    protected abstract void validarDadosEspecificos(ContratoDTO dados);
 
     protected Contrato criarContratoVazio(ContratoDTO dados) {
         Contrato contrato = new Contrato(dados.anuncio.getId(), "");
@@ -40,10 +43,10 @@ public abstract class GeradorContrato {
     protected abstract String gerarCabecalho(ContratoDTO dados);
 
     protected void gerarClausulasPadrao(Contrato contrato, ContratoDTO dados) {
-        // cláusulas comuns a qualquer contrato (foro, obrigações gerais, etc.)
+        
         contrato.adicionarClausula("Cláusula 1 - Das partes: O presente contrato é celebrado entre " + 
-            dados.anunciante.getNome() + ", doravante denominado ANUNCIANTE, e " + 
-            dados.interessado.getNome() + ", doravante denominado INTERESSADO.");
+            dados.anuncio.getAnunciante().getNome() + ", doravante denominado ANUNCIANTE, e " + 
+            dados.anuncio.getComprador().getNome() + ", doravante denominado INTERESSADO.");
         contrato.adicionarClausula("Cláusula 2 - - Do objeto: O objeto deste contrato é o imóvel anunciado, conforme descrito no anúncio de ID " + 
             dados.anuncio.getId() + ".");
     }

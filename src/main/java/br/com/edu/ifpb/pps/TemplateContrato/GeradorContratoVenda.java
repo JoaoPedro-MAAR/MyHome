@@ -10,6 +10,14 @@ public class GeradorContratoVenda extends GeradorContrato {
     }
 
     @Override
+    protected void validarDadosEspecificos(ContratoDTO dados) {
+        if (dados.formaPagamento == null || dados.formaPagamento.isEmpty()) {
+            throw new IllegalArgumentException("Forma de pagamento não pode ser nula ou vazia para contrato de venda.");
+        }
+
+    }
+
+    @Override
     protected void gerarClausulasEspecificas(Contrato contrato, ContratoDTO dados) {
         contrato.adicionarClausula("Cláusula 3 - DO PREÇO E FORMA DE PAGAMENTO: O imóvel objeto deste contrato é vendido pelo valor de R$ " + 
             dados.anuncio.getPreco() + ", a ser pago " + dados.formaPagamento + ".");
